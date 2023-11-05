@@ -17,41 +17,6 @@ package cl.ravenhill.jakt.exceptions
  **************************************************************************************************/
 
 /**
- * Base exception for unfulfilled requirements.
- *
- * @param lazyMessage The message to be used in the exception.
- *
- * @author <a href="https://www.github.com/r8vnhill">R8V</a>
- * @version 2.0.0
- * @since 2.0.0
- */
-open class ConstraintException(lazyMessage: () -> String) : Exception(lazyMessage())
-
-/**
- * Exception thrown when an integer constraint is not fulfilled.
- *
- * @param lazyMessage The message to be used in the exception.
- *
- * @author <a href="https://www.github.com/r8vnhill">R8V</a>
- * @version 2.0.0
- * @since 2.0.0
- */
-class IntRequirementException(lazyMessage: () -> String) :
-        ConstraintException(lazyMessage)
-
-/**
- * Exception thrown when a long constraint is not fulfilled.
- *
- * @param lazyMessage The message to be used in the exception.
- *
- * @author <a href="https://www.github.com/r8vnhill">R8V</a>
- * @version 2.0.0
- * @since 2.0.0
- */
-class LongRequirementException(lazyMessage: () -> String) :
-        ConstraintException(lazyMessage)
-
-/**
  * Exception thrown when a pair constraint is not fulfilled.
  *
  * @param lazyMessage The message to be used in the exception.
