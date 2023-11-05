@@ -17,18 +17,6 @@ package cl.ravenhill.jakt.exceptions
  **************************************************************************************************/
 
 /**
- * Exception thrown when a double constraint is not fulfilled.
- *
- * @param lazyMessage The message to be used in the exception.
- *
- * @author <a href="https://www.github.com/r8vnhill">R8V</a>
- * @version 2.0.0
- * @since 2.0.0
- */
-class DoubleRequirementException(lazyMessage: () -> String) :
-        ConstraintException(lazyMessage)
-
-/**
  * Exception thrown when a collection constraint is not fulfilled.
  *
  * @param lazyMessage The message to be used in the exception.
