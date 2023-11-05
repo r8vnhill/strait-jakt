@@ -12,7 +12,7 @@ package cl.ravenhill.jakt.exceptions
  * capture all these failures rather than halting on the first one. Each underlying failure is represented
  * by a `Throwable` instance.
  *
- * ### Example Usage:
+ * ## Example Usage:
  *
  * Suppose you are running multiple asynchronous tasks and wish to capture any failures that might arise from
  * them without stopping the entire batch of tasks. On completion, you can aggregate any failures and throw
@@ -37,8 +37,8 @@ package cl.ravenhill.jakt.exceptions
  * @constructor Constructs an instance of `CompositeException` with the provided list of [failures].
  *
  * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 2.0.0
- * @version 2.0.0
+ * @since 1.0.0
+ * @version 1.0.0
  */
 class CompositeException(val failures: List<Throwable>) : Exception(
         "Multiple exceptions occurred: " +
