@@ -17,18 +17,6 @@ package cl.ravenhill.jakt.exceptions
  **************************************************************************************************/
 
 /**
- * Exception thrown when a pair constraint is not fulfilled.
- *
- * @param lazyMessage The message to be used in the exception.
- *
- * @author <a href="https://www.github.com/r8vnhill">R8V</a>
- * @since 2.0.0
- * @version 2.0.0
- */
-class PairRequirementException(lazyMessage: () -> String) :
-        ConstraintException(lazyMessage)
-
-/**
  * Exception thrown when a double constraint is not fulfilled.
  *
  * @param lazyMessage The message to be used in the exception.
