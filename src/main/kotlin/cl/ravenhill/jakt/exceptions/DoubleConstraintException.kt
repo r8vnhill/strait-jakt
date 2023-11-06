@@ -24,4 +24,4 @@ package cl.ravenhill.jakt.exceptions
  * @since 1.0.0
  * @version 1.0.0
  */
-class DoubleRequirementException(lazyMessage: () -> String) : ConstraintException(lazyMessage)
+open class DoubleConstraintException(lazyMessage: () -> String) : ConstraintException(lazyMessage)
