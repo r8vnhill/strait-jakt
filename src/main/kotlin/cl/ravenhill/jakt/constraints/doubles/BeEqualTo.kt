@@ -38,7 +38,7 @@ import kotlin.math.abs
 data class BeEqualTo(val expected: Double, val tolerance: Double = 1e-8) : DoubleConstraint {
 
     init {
-        require(tolerance >= 0) { "Tolerance must be non-negative." }
+        require(tolerance >= 0) { "The tolerance must be non-negative." }
     }
 
     override val validator = { value: Double -> abs(value - expected) <= tolerance }
