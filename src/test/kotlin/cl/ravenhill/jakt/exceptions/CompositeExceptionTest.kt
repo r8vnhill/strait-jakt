@@ -10,7 +10,7 @@ import io.kotest.property.checkAll
 class CompositeExceptionTest : FreeSpec({
     "A [CompositeException]" - {
         "should be able to be created with a list of exceptions" {
-            checkAll(Arb.list(Arb.string())) { messages ->
+            checkAll(Arb.list(Arb.string(), 0..50)) { messages ->
                 val exceptions = messages.map { Exception(it) }
                 val exception = CompositeException(exceptions)
                 exception.message shouldBe
