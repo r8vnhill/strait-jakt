@@ -21,4 +21,4 @@ package cl.ravenhill.jakt.constraints.ints
  * @since 1.0.0
  * @version 1.0.0
  */
-class BeAtMost(maxInclusive: Int) : BeInRange(Int.MIN_VALUE..maxInclusive)
+data class BeAtMost(val maxInclusive: Int) : BeInRange(Int.MIN_VALUE..maxInclusive)
