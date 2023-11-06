@@ -3,8 +3,9 @@
  * BSD Zero Clause License.
  */
 
-package cl.ravenhill.jakt.constraints
+package cl.ravenhill.jakt.constraints.doubles
 
+import cl.ravenhill.jakt.constraints.Constraint
 import cl.ravenhill.jakt.exceptions.DoubleRequirementException
 import cl.ravenhill.utils.DoubleRange
 import cl.ravenhill.utils.toRange
@@ -17,11 +18,9 @@ import kotlin.math.abs
  * @version 2.0.0
  * @since 2.0.0
  */
-sealed interface DoubleConstraint : Constraint<Double> {
+interface DoubleConstraint : Constraint<Double> {
 
-    /// Documentation inherited from [Requirement]
-    override fun generateException(description: String) =
-        DoubleRequirementException { description }
+    override fun generateException(description: String) = DoubleRequirementException { description }
 
     /**
      * A [DoubleConstraint] constraint that checks if a given [Double] is within a specified range.

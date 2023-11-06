@@ -9,8 +9,9 @@
  */
 
 
-package cl.ravenhill.jakt.constraints
+package cl.ravenhill.jakt.constraints.longs
 
+import cl.ravenhill.jakt.constraints.Constraint
 import cl.ravenhill.jakt.exceptions.LongRequirementException
 
 
