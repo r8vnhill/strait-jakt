@@ -79,6 +79,47 @@ fun <T: Comparable<T>> Arb.Companion.orderedPair(
 }
 
 /**
+ * Provides an arbitrary generator of ordered pairs of values of type [T] using a single arbitrary generator.
+ *
+ * This function produces pairs `(i, j)` such that:
+ * - If `reverted` is `false` (default), `i <= j`.
+ * - If `reverted` is `true`, `i >= j`.
+ *
+ * If the `strict` parameter is set to `true`, the values of `i` and `j` will be distinct.
+ *
+ * The convenience of this function lies in its ability to take a single arbitrary generator and produce ordered pairs
+ * from it. It essentially delegates the task to the more general `orderedPair` function by passing the same generator
+ * for both values.
+ *
+ * ## Usage
+ * ### Example 1: Creating another arbitrary
+ * ```kotlin
+ * fun <T> Arb.Companion.tree(gen: Arb<T>, maxDepth: IntRange = 1..5) = arbitrary {
+ *    val (lo, hi) = orderedPair(int(maxDepth), strict = true).bind()
+ *    ...
+ * }
+ * ```
+ *
+ * ### Example 2: Using in property-based tests
+ * ```kotlin
+ * checkAll(Arb.orderedPair(Arb.int(), strict = true)) { (lo, hi) ->
+ *   // Some test logic with the generated pair
+ * }
+ * ```
+ *
+ * @param gen Arbitrary generator used for both values of the pair.
+ * @param strict If set to `true`, ensures both values in the pair are distinct.
+ * @param reverted If set to `true`, the pair will be in decreasing order. Otherwise, it will be in increasing order.
+ *
+ * @return An arbitrary generator producing ordered pairs of values of type [T].
+ */
+fun <T : Comparable<T>> Arb.Companion.orderedPair(
+    gen: Arb<T>,
+    strict: Boolean = false,
+    reverted: Boolean = false
+) = orderedPair(gen, gen, strict, reverted)
+
+/**
  * Provides an arbitrary generator of ordered triples of values of type [T].
  *
  * This function produces triples `(i, j, k)` such that:
