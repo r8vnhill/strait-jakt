@@ -78,3 +78,102 @@ fun <T: Comparable<T>> Arb.Companion.orderedPair(
     if (shouldRevert) j to i else i to j
 }
 
+/**
+ * Provides an arbitrary generator of ordered triples of values of type [T].
+ *
+ * This function produces triples `(i, j, k)` such that:
+ * - If `reverted` is `false` (default), `i <= j <= k`.
+ * - If `reverted` is `true`, `i >= j >= k`.
+ *
+ * If the `strict` parameter is set to `true`, the values of `i`, `j`, and `k` will be distinct.
+ *
+ * ## Usage
+ * ### Example 1: Using to create another arbitrary
+ * ```kotlin
+ * fun Arb.Companion.rangePair(gen: Arb<Int>) = arbitrary {
+ *   val (lo, mid, hi) = orderedTriple(gen, gen, gen, strict = true).bind()
+ *   lo..mid to mid..hi
+ * }
+ * ```
+ *
+ * ### Example 2: Using in property-based tests
+ * ```kotlin
+ * checkAll(Arb.orderedTriple(int(), int(), int(), strict = true)) { (lo, mid, hi) ->
+ *   // Some test logic with the generated triple
+ * }
+ * ```
+ *
+ * @param a Arbitrary generator for the first value of the triple.
+ * @param b Arbitrary generator for the second value of the triple.
+ * @param c Arbitrary generator for the third value of the triple.
+ * @param strict If set to `true`, ensures all three values in the triple are distinct.
+ * @param reverted If set to `true`, the triple will be in decreasing order. Otherwise, it will be in increasing order.
+ *
+ * @return An arbitrary generator producing ordered triples of values of type [T].
+ */
+fun <T : Comparable<T>> Arb.Companion.orderedTriple(
+    a: Arb<T>,
+    b: Arb<T>,
+    c: Arb<T>,
+    strict: Boolean = false,
+    reverted: Boolean = false
+) = arbitrary {
+    val i = a.bind()
+    var j = b.bind()
+    var k = c.bind()
+
+    while (strict && i == j) {
+        j = b.bind() // Re-bind `j` until it is different from `i` if `strict` is `true`
+    }
+
+    while (strict && (i == k || j == k)) {
+        k = c.bind() // Re-bind `k` until it is different from `i` and `j` if `strict` is `true`
+    }
+
+    val sortedTriple = if (!reverted) {
+        listOf(i, j, k).sorted()
+    } else {
+        listOf(i, j, k).sortedDescending()
+    }
+    Triple(sortedTriple[0], sortedTriple[1], sortedTriple[2])
+}
+
+/**
+ * Provides an arbitrary generator of ordered triples of values of type [T], where all three values are generated using
+ * the same arbitrary generator.
+ *
+ * This function is a convenience overload of the [orderedTriple] function where the same arbitrary generator is used
+ * for all three values.
+ * It produces triples `(i, j, k)` such that:
+ * - If `reverted` is `false` (default), `i <= j <= k`.
+ * - If `reverted` is `true`, `i >= j >= k`.
+ *
+ * If the `strict` parameter is set to `true`, the values of `i`, `j`, and `k` will be distinct.
+ *
+ * ## Usage
+ * ### Example 1: Using to create another arbitrary
+ * ```kotlin
+ * fun Arb.Companion.rangePair(gen: Arb<Int>) = arbitrary {
+ *   val (lo, mid, hi) = orderedTriple(gen, strict = true).bind()
+ *   lo..mid to mid..hi
+ * }
+ * ```
+ *
+ * ### Example 2: Using in property-based tests
+ * ```kotlin
+ * checkAll(Arb.orderedTriple(int(), strict = true)) { (lo, mid, hi) ->
+ *   // Some test logic with the generated triple
+ * }
+ * ```
+ *
+ * @param gen Arbitrary generator used for all three values of the triple.
+ * @param strict If set to `true`, ensures all three values in the triple are distinct.
+ * @param reverted If set to `true`, the triple will be in decreasing order. Otherwise, it will be in increasing order.
+ *
+ * @return An arbitrary generator producing ordered triples of values of type [T].
+ */
+fun <T : Comparable<T>> Arb.Companion.orderedTriple(
+    gen: Arb<T>,
+    strict: Boolean = false,
+    reverted: Boolean = false
+) = orderedTriple(gen, gen, gen, strict, reverted)
