@@ -29,34 +29,6 @@ interface Constraint<T> {
     val validator: (T) -> Boolean
 
     /**
-     * Validates the provided value against the constraint's conditions.
-     *
-     * __Important:__ Behaviour is undefined if the implementing class overrides this function.
-     *
-     * @param value The value to validate.
-     * @param message The description to use if validation fails.
-     */
-    fun validate(value: T, message: String): Result<T> = if (!validator(value)) {
-        Result.failure(generateException(message))
-    } else {
-        Result.success(value)
-    }
-
-    /**
-     * Validates that the provided value does not meet the constraint's conditions.
-     *
-     * __Important:__ Behaviour is undefined if the implementing class overrides this function.
-     *
-     * @param value The value to validate.
-     * @param message The description to use if validation fails.
-     */
-    fun validateNot(value: T, message: String): Result<T> = if (validator(value)) {
-        Result.failure(generateException(message))
-    } else {
-        Result.success(value)
-    }
-
-    /**
      * Generates an exception to indicate a constraint violation.
      *
      * @param description A description of the constraint violation.

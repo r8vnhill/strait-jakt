@@ -12,40 +12,38 @@
 package cl.ravenhill.jakt.constraints.longs
 
 import cl.ravenhill.jakt.constraints.Constraint
-import cl.ravenhill.jakt.exceptions.LongRequirementException
-
+import cl.ravenhill.jakt.exceptions.LongConstraintException
 
 /**
- * A LongRequirement is a Requirement that is applicable to Long values.
+ * Represents a constraint specific to `Long` data type values.
  *
- * @author <a href="https://www.github.com/r8vnhill">R8V</a>
- * @since 2.0.0
- * @version 2.0.0
+ * This interface extends the [Constraint] interface specialized for `Long` type. Implementations of this
+ * interface are expected to define constraints on `Long` values and provide an exception generator for constraint
+ * violations.
+ *
+ * ## Examples
+ * ### Example 1: Implementing a custom `LongConstraint`
+ * ```kotlin
+ * data object BePositiveLong : LongConstraint {
+ *     override val validator = { value: Long -> value > 0L }
+ * }
+ * ```
+ *
+ * @see Constraint
+ *
+ * @property validator A lambda function that defines the constraint for a given `Long` value.
+ *
+ * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
+ * @since 1.0.0
+ * @version 1.0.0
  */
-sealed interface LongConstraint : Constraint<Long> {
+interface LongConstraint : Constraint<Long> {
 
     /**
-     * Generates a [LongRequirementException] using the provided [description].
+     * Generates an exception with the provided description in case of constraint violations.
      *
-     * @param description The description to use in the generated exception.
-     * @return A new instance of [LongRequirementException] using the provided [description].
+     * @param description A description of the violated constraint.
+     * @return A [LongConstraintException] with the provided description.
      */
-    override fun generateException(description: String) =
-        cl.ravenhill.jakt.exceptions.LongRequirementException { description }
-
-    /**
-     * A [BeEqualTo] requirement checks whether a given Long value is equal to an expected value.
-     *
-     * @param expected The expected value to compare with.
-     */
-    class BeEqualTo(val expected: Long) : LongConstraint {
-
-        /**
-         * The validator function for this requirement.
-         */
-        override val validator = { value: Long -> value == expected }
-
-        /// Documentation inherited from [Any].
-        override fun toString() = "BeEqualTo { expected: $expected }"
-    }
+    override fun generateException(description: String) = LongConstraintException { description }
 }

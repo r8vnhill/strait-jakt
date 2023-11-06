@@ -6,6 +6,7 @@
 package cl.ravenhill.jakt
 
 import cl.ravenhill.jakt.constraints.Constraint
+import cl.ravenhill.jakt.exceptions.CompositeException
 import cl.ravenhill.jakt.exceptions.ConstraintException
 
 object Jakt {
@@ -34,7 +35,7 @@ object Jakt {
         if (skipChecks) return
         Scope().apply(builder).failures.let { errors ->
             if (errors.isNotEmpty()) {
-                throw cl.ravenhill.jakt.exceptions.CompositeException(errors)
+                throw CompositeException(errors)
             }
         }
     }
@@ -78,44 +79,47 @@ object Jakt {
          * @property message The message key associated with the clause.
          */
         inner class StringScope(val message: String) {
-
-            /**
-             * Property that returns the outer `EnforceScope` instance.
-             */
-            internal val outerScope: Scope
-                get() = this@Scope
+            val outerScope = this@Scope
 
             /**
              * Infix function that validates that the current value satisfies the specified
              * requirement.
              *
-             * @param requirement the requirement to validate against.
+             * @param constraint the requirement to validate against.
              * @receiver the current value to be validated.
-             *
-             * @see Constraint.validate
              */
 
-            infix fun <T, R : Constraint<T>> T.must(requirement: R) =
-                _results.add(requirement.validate(this, message))
+            infix fun <T, C : Constraint<T>> T.must(constraint: C) =
+                _results.add(
+                    if (!constraint.validator(this)) {
+                        Result.failure(constraint.generateException(message))
+                    } else {
+                        Result.success(this)
+                    }
+                )
 
             /**
              * Infix function that validates that the current value does not satisfy the specified
              * requirement.
              *
-             * @param requirement the requirement to validate against.
+             * @param constraint the requirement to validate against.
              * @receiver the current value to be validated.
-             *
-             * @see Constraint.validateNot
              */
-            infix fun <T, R : Constraint<T>> T.mustNot(requirement: R) =
-                _results.add(requirement.validateNot(this, message))
+            infix fun <T, C : Constraint<T>> T.mustNot(constraint: C) =
+                _results.add(
+                    if (constraint.validator(this)) {
+                        Result.failure(constraint.generateException(message))
+                    } else {
+                        Result.success(this)
+                    }
+                )
 
             /**
              * Defines a [Constraint] based on a predicate.
              *
              * @param predicate The predicate that defines the clause.
              */
-            fun requirement(predicate: () -> Boolean) = _results.add(
+            fun constraint(predicate: () -> Boolean) = _results.add(
                 if (predicate()) {
                     Result.success(Unit)
                 } else {

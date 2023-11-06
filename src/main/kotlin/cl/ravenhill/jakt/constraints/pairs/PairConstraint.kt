@@ -6,46 +6,35 @@
 package cl.ravenhill.jakt.constraints.pairs
 
 import cl.ravenhill.jakt.constraints.Constraint
-
+import cl.ravenhill.jakt.exceptions.PairConstraintException
 
 /**
- * A [PairConstraint] is a [Constraint] that specifies constraints on a [Pair] of values of types
- * [T] and [U].
+ * An interface for enforcing a constraint on a pair of elements.
  *
- * @param T The type of the first element of the pair.
- * @param U The type of the second element of the pair.
+ * This interface extends the [Constraint] interface to specifically handle
+ * constraints applicable to pairs. It requires implementing classes to define
+ * their validation logic through the `validator` function, tailored for pairs
+ * of elements of types [T] and [U].
  *
- * @author <a href="https://www.github.com/r8vnhill">R8V</a>
- * @since 2.0.0
- * @version 2.0.0
+ * Upon validation failure, a [PairConstraintException] can be generated to
+ * convey the specific constraint violation.
+ *
+ * ## Usage
+ * Implement this interface when you need to apply constraints to a pair of elements,
+ * and provide custom validation logic within the `validator` implementation.
+ *
+ * @param T The type of the first element in the pair.
+ * @param U The type of the second element in the pair.
+ *
+ * @throws PairConstraintException when the pair does not satisfy the imposed constraint.
  */
-sealed interface PairConstraint<T, U> : Constraint<Pair<T, U>> {
-
-    /// Documentation inherited from [Requirement].
-    override fun generateException(description: String) =
-        cl.ravenhill.jakt.exceptions.PairRequirementException { description }
+interface PairConstraint<T, U> : Constraint<Pair<T, U>> {
 
     /**
-     * [BeStrictlyOrdered] is a [PairConstraint] that requires that the first element in a [Pair]
-     * is strictly less than the second element, where both elements must be of the same comparable
-     * type [A].
+     * Generates a [PairConstraintException] with the provided description.
+     *
+     * @param description A message describing the constraint violation.
+     * @return A [PairConstraintException] with the given description.
      */
-    class BeStrictlyOrdered<A : Comparable<A>> : PairConstraint<A, A> {
-        /// Documentation inherited from [Requirement].
-        override val validator = { value: Pair<A, A> -> value.first < value.second }
-
-
-        /// Documentation inherited from [Any].
-        override fun toString() = "BeStrictlyOrdered<~>"
-    }
-
-    /**
-     * [BeFinite] is a [PairConstraint] that requires that both elements in a [Pair] are finite
-     * doubles.
-     */
-    data object BeFinite : PairConstraint<Double, Double> {
-        override val validator =
-            { value: Pair<Double, Double> -> value.first.isFinite() && value.second.isFinite() }
-    }
+    override fun generateException(description: String) = PairConstraintException { description }
 }
-

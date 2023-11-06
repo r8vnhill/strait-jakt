@@ -1,6 +1,7 @@
 package cl.ravenhill.jakt.constraints.strings
 
-object BeAlphanumeric : StringConstraint {
-    override val validator: (String) -> Boolean
-        get() = TODO("Not yet implemented")
+data object BeAlphanumeric : StringConstraint {
+    override val validator: (String) -> Boolean = { value ->
+        value.all { it.isLetterOrDigit() }
+    }
 }
