@@ -1,37 +1,38 @@
-/**
- * Copyright (c) 2023, R8V.
- * BSD Zero Clause License.
- */
-
 package cl.ravenhill.jakt.constraints
 
 import cl.ravenhill.jakt.exceptions.ConstraintException
 
 
 /**
- * A constraint that can be applied to a value of type [T].
+ * Defines a contract for implementing constraints on values of type [T].
  *
- * @param T The type of the value this constraint can be applied to.
+ * A constraint represents a condition or set of conditions that values of type [T] must satisfy.
+ * It provides utility functions for validation and for generating constraint violation exceptions.
  *
- * @property validator A function that checks if a value satisfies the constraint.
+ * ## Usage
+ * ### Example: Implementing a custom constraint for integers
+ * ```kotlin
+ * class IntPositiveConstraint : Constraint<Int> {
+ *     override val validator: (Int) -> Boolean = { it > 0 }
  *
- * @author <a href="https://www.github.com/r8vnhill">R8V</a>
- * @since 2.0.0
- * @version 2.0.0
+ *     override fun generateException(description: String) = ConstraintException { description }
+ * }
+ * ```
+ *
+ * @property validator A lambda function that defines the constraint's validation logic.
+ *
+ * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
+ * @since 1.0.0
+ * @version 1.0.0
  */
 interface Constraint<T> {
     val validator: (T) -> Boolean
 
     /**
-     * Validates the given value using the provided validator function and returns a [Result]
-     * indicating the outcome.
-     * If the validator function returns `false`, a failure [Result] is returned with the generated
-     * exception message.
-     * Otherwise, a success [Result] is returned with the original value.
+     * Validates the provided value against the constraint's conditions.
      *
-     * @param value the value to validate.
-     * @param message the error message to use in case of validation failure.
-     * @return a [Result] indicating the validation outcome.
+     * @param value The value to validate.
+     * @param message The description to use if validation fails.
      */
     fun validate(value: T, message: String): Result<T> = if (!validator(value)) {
         Result.failure(generateException(message))
@@ -40,15 +41,10 @@ interface Constraint<T> {
     }
 
     /**
-     * Validates the given value using the provided validator function and returns a [Result]
-     * indicating the outcome.
-     * If the validator function returns `true`, a failure [Result] is returned with the generated
-     * exception message.
-     * Otherwise, a success [Result] is returned with the original value.
+     * Validates that the provided value does not meet the constraint's conditions.
      *
-     * @param value the value to validate.
-     * @param message the error message to use in case of validation failure.
-     * @return a [Result] indicating the validation outcome.
+     * @param value The value to validate.
+     * @param message The description to use if validation fails.
      */
     fun validateNot(value: T, message: String): Result<T> = if (validator(value)) {
         Result.failure(generateException(message))
@@ -57,9 +53,11 @@ interface Constraint<T> {
     }
 
     /**
-     * Generates an exception with the given description.
+     * Generates an exception to indicate a constraint violation.
      *
-     * @return A new instance of [ConstraintException] with the given message.
+     * @param description A description of the constraint violation.
+     *
+     * @return A [ConstraintException] with the provided description.
      */
     fun generateException(description: String): ConstraintException
 }

@@ -6,6 +6,7 @@
 package cl.ravenhill.jakt.constraints.collections
 
 import cl.ravenhill.jakt.constraints.Constraint
+import cl.ravenhill.jakt.exceptions.CollectionRequirementException
 
 /**
  * Represents a set of conditions or rules that collections must satisfy. These conditions,
@@ -36,7 +37,5 @@ interface CollectionConstraint<T> : Constraint<Collection<T>> {
      * @param description A description or message explaining the nature of the requirement violation.
      * @return A specialized exception representing a violation of a collection requirement.
      */
-    override fun generateException(description: String) =
-        cl.ravenhill.jakt.exceptions.CollectionRequirementException { description }
-
+    override fun generateException(description: String) = CollectionRequirementException { description }
 }

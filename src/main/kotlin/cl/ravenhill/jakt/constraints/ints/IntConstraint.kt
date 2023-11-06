@@ -3,8 +3,9 @@
  * BSD Zero Clause License.
  */
 
-package cl.ravenhill.jakt.constraints
+package cl.ravenhill.jakt.constraints.ints
 
+import cl.ravenhill.jakt.constraints.Constraint
 import cl.ravenhill.jakt.exceptions.IntConstraintException
 import cl.ravenhill.utils.IntToInt
 import cl.ravenhill.utils.contains

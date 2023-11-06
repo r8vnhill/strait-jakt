@@ -3,7 +3,9 @@
  * BSD Zero Clause License.
  */
 
-package cl.ravenhill.jakt.constraints
+package cl.ravenhill.jakt.constraints.pairs
+
+import cl.ravenhill.jakt.constraints.Constraint
 
 
 /**
