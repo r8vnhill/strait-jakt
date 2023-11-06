@@ -1,9 +1,24 @@
 package cl.ravenhill.jakt.constraints.ints
 
 /**
- * Represents a requirement that an integer value must be at least a specified value.
+ * Represents a constraint that checks if a given [Int] value is greater than or equal to a specified minimum value.
  *
- * @param minInclusive The minimum allowed value.
- * @property least The minimum allowed value.
+ * This class is a specialization of [BeInRange], where the range is defined from the provided minimum value (inclusive)
+ * up to the maximum integer value.
+ * In other words, it checks if a given integer value lies in the range `[minInclusive, Int.MAX_VALUE]`.
+ *
+ * ## Usage
+ * ### Example: Checking if an integer is at least a certain value
+ * ```kotlin
+ * val constraint = BeAtLeast(10)
+ * val success = constraint.validator(15) // This will return `true` since 15 is greater than 10
+ * val failure = constraint.validator(5)  // This will return `false` since 5 is less than 10
+ * ```
+ *
+ * @param minInclusive The minimum value (inclusive) that an integer should have to satisfy the constraint.
+ *
+ * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
+ * @since 1.0.0
+ * @version 1.0.0
  */
 class BeAtLeast(minInclusive: Int) : BeInRange(minInclusive..Int.MAX_VALUE)
