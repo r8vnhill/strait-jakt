@@ -10,6 +10,6 @@ package cl.ravenhill.jakt.constraints.collections
  *
  * @property size The desired size that the collection should have.
  */
-data class HaveSize<T>(val size: Int) : CollectionConstraint<T> {
-    override val validator = { value: Collection<T> -> value.size == size }
+data class HaveSize(val size: Int) : CollectionConstraint {
+    override val validator = { value: Collection<*> -> value.size == size }
 }

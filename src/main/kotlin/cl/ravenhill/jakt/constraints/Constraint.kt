@@ -31,6 +31,8 @@ interface Constraint<T> {
     /**
      * Validates the provided value against the constraint's conditions.
      *
+     * __Important:__ Behaviour is undefined if the implementing class overrides this function.
+     *
      * @param value The value to validate.
      * @param message The description to use if validation fails.
      */
@@ -42,6 +44,8 @@ interface Constraint<T> {
 
     /**
      * Validates that the provided value does not meet the constraint's conditions.
+     *
+     * __Important:__ Behaviour is undefined if the implementing class overrides this function.
      *
      * @param value The value to validate.
      * @param message The description to use if validation fails.

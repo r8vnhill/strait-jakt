@@ -19,15 +19,15 @@ package cl.ravenhill.jakt.exceptions
  * `lazyMessage` lambda that defines the error message. For example:
  *
  * ```kotlin
- * throw CollectionRequirementException { "The provided collection does not satisfy the required conditions." }
+ * throw CollectionConstraintException { "The provided collection does not satisfy the required conditions." }
  * ```
  *
  * @param lazyMessage A lambda responsible for generating the error message when the exception is thrown.
  *
- * @constructor Initializes a new `CollectionRequirementException` using the specified `lazyMessage`.
+ * @constructor Initializes a new `CollectionConstraintException` using the specified `lazyMessage`.
  *
  * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
  * @since 1.0.0
  * @version 1.0.0
  */
-class CollectionRequirementException(lazyMessage: () -> String) : ConstraintException(lazyMessage)
+class CollectionConstraintException(lazyMessage: () -> String) : ConstraintException(lazyMessage)

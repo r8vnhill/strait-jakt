@@ -6,36 +6,38 @@
 package cl.ravenhill.jakt.constraints.collections
 
 import cl.ravenhill.jakt.constraints.Constraint
-import cl.ravenhill.jakt.exceptions.CollectionRequirementException
+import cl.ravenhill.jakt.exceptions.CollectionConstraintException
 
 /**
- * Represents a set of conditions or rules that collections must satisfy. These conditions,
- * when applied to collections, ensure that they meet certain criteria or characteristics.
- * These constraints can be useful in scenarios where collections need to adhere to specific
- * requirements, like having a specific size or being empty.
+ * Represents a constraint specifically tailored for collections.
  *
- * Each specific constraint is represented as a subclass of `CollectionRequirement`.
+ * This interface extends the general [Constraint] interface but specializes in handling collections of any type.
+ * When the constraint for a collection is violated, it generates a [CollectionConstraintException]
+ * with the provided description.
  *
- * @param T The type of elements contained in the collection to which the requirement is applied.
+ * ## Usage
+ * ### Example: Implementing a custom collection constraint to ensure non-emptiness
+ * ```kotlin
+ * class NonEmptyCollectionConstraint : CollectionConstraint {
+ *     override val validator: (Collection<*>) -> Boolean = { it.isNotEmpty() }
+ * }
+ * ```
  *
- * @property validator A lambda function that checks whether a given collection satisfies the
- *                     constraint.
- *
- * @see Constraint The general interface for requirements, of which `CollectionRequirement`
- *      is a specialized version focused on collections.
+ * @see Constraint
+ * @see CollectionConstraintException
  *
  * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 2.0.0
- * @version 2.0.0
+ * @since 1.0.0
+ * @version 1.0.0
  */
-interface CollectionConstraint<T> : Constraint<Collection<T>> {
+interface CollectionConstraint : Constraint<Collection<*>> {
 
     /**
-     * Generates an exception for cases when a collection does not meet the requirement.
-     * This exception provides additional context or details about the requirement violation.
+     * Generates a constraint violation exception specific to collections.
      *
-     * @param description A description or message explaining the nature of the requirement violation.
-     * @return A specialized exception representing a violation of a collection requirement.
+     * @param description A description of the constraint violation.
+     *
+     * @return A [CollectionConstraintException] with the provided description.
      */
-    override fun generateException(description: String) = CollectionRequirementException { description }
+    override fun generateException(description: String) = CollectionConstraintException { description }
 }
