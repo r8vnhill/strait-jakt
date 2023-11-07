@@ -3,6 +3,7 @@ package cl.ravenhill.jakt
 import cl.ravenhill.jakt.arbs.collectionHaveSize
 import cl.ravenhill.jakt.arbs.datatypes.anyPrimitive
 import io.kotest.core.spec.style.FreeSpec
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.result.shouldBeFailure
 import io.kotest.matchers.result.shouldBeSuccess
 import io.kotest.matchers.shouldBe
@@ -91,6 +92,52 @@ class JaktTest : FreeSpec({
                             }
                             outerScope.results.size shouldBe vss.size
                         }
+                    }
+                }
+            }
+        }
+
+        "should have a list of [result]s that" - {
+            "should be empty when created" {
+                Jakt.Scope().results.shouldBeEmpty()
+            }
+
+            "should contain the results of the clauses" {
+                checkAll(
+                    Arb.string(),
+                    Arb.collectionHaveSize(Arb.int(0..10)),
+                    Arb.list(Arb.list(Arb.anyPrimitive(), 0..10), 0..10)
+                ) { message, constraint, vss ->
+                    with(Jakt.Scope().StringScope(message)) {
+                        vss.forEach { vs ->
+                            vs must constraint
+                        }
+                        outerScope.results.size shouldBe vss.size
+                    }
+                }
+            }
+        }
+
+        "should have a list of [failure]s that" - {
+            "should be empty when created" {
+                Jakt.Scope().failures.shouldBeEmpty()
+            }
+
+            "should contain the failures of the clauses" {
+                checkAll(
+                    Arb.string(),
+                    Arb.collectionHaveSize(Arb.int(0..10)),
+                    Arb.list(Arb.list(Arb.anyPrimitive(), 0..10), 0..10)
+                ) { message, constraint, vss ->
+                    with(Jakt.Scope().StringScope(message)) {
+                        var failures = 0
+                        vss.forEach { vs ->
+                            vs must constraint
+                            if (!constraint.validator(vs)) {
+                                failures++
+                            }
+                        }
+                        outerScope.failures.size shouldBe failures
                     }
                 }
             }

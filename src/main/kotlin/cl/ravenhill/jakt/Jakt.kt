@@ -60,8 +60,7 @@ object Jakt {
         val results: List<Result<*>>
             get() = _results
 
-        val failures: List<Throwable>
-            get() = _results.filter { it.isFailure }.map { it.exceptionOrNull()!! }
+        val failures: List<Throwable> get() = _results.filter { it.isFailure }.map { it.exceptionOrNull()!! }
 
         /**
          * Defines a clause of a contract.
@@ -71,8 +70,7 @@ object Jakt {
          *
          * @return A [StringScope] instance that can be used to define a [Constraint] for the clause.
          */
-        inline operator fun String.invoke(value: StringScope.() -> Boolean) =
-            StringScope(this).apply { value() }
+        inline operator fun String.invoke(value: StringScope.() -> Boolean) = StringScope(this).apply { value() }
 
         /**
          * A scope for defining a [Constraint] for a contract clause.
