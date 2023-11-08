@@ -32,18 +32,22 @@ package cl.ravenhill.jakt.exceptions
  * The resulting exception message will be:
  * `Multiple exceptions occurred: [{ Network error }, { Database connection failed }, { Timeout occurred }]`
  *
- * @property failures A list of `Throwable` instances, each representing an individual failure or exception.
+ * @property throwables A list of `Throwable` instances, each representing an individual failure or exception.
  *
- * @constructor Constructs an instance of `CompositeException` with the provided list of [failures].
+ * @constructor Constructs an instance of `CompositeException` with the provided list of [throwables].
  *
  * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
  * @since 1.0.0
  * @version 1.0.0
  */
-class CompositeException(val failures: List<Throwable>) : Exception(
-    if (failures.size == 1)
-        "An exception occurred: ${failures[0].message}"
+class CompositeException(val throwables: List<Throwable>) : Exception(
+    if (throwables.size == 1)
+        "An exception occurred: ${throwables[0].message}"
     else
         "Multiple exceptions occurred: " +
-              failures.joinToString(", ") { "{ ${it.message} }" }
-)
+              throwables.joinToString(", ") { "{ ${it.message} }" }
+) {
+    init {
+        require(throwables.isNotEmpty()) { "The list of throwables cannot be empty" }
+    }
+}

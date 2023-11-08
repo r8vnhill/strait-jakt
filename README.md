@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.r8vnhill:strait-jakt:1.0.2")
+    implementation("com.github.r8vnhill:strait-jakt:1.1.0")
 }
 ```
 

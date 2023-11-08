@@ -1,7 +1,6 @@
 package cl.ravenhill.jakt.constraints.doubles
 
-import cl.ravenhill.utils.DoubleRange
-import cl.ravenhill.utils.toRange
+import cl.ravenhill.jakt.utils.DoubleRange
 
 /**
  * Represents a constraint that verifies if a given [Double] value falls within a specified range.
