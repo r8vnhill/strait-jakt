@@ -35,7 +35,6 @@ object Jakt {
         if (skipChecks) return
         Scope().apply(builder).failures.let { errors ->
             if (errors.isNotEmpty()) {
-                if (errors.size == 1) throw errors.first()
                 throw CompositeException(errors)
             }
         }

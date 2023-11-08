@@ -41,6 +41,9 @@ package cl.ravenhill.jakt.exceptions
  * @version 1.0.0
  */
 class CompositeException(val failures: List<Throwable>) : Exception(
+    if (failures.size == 1)
+        "An exception occurred: ${failures[0].message}"
+    else
         "Multiple exceptions occurred: " +
               failures.joinToString(", ") { "{ ${it.message} }" }
 )

@@ -1,16 +1,15 @@
-import org.jreleaser.model.Active
-
 plugins {
     kotlin("jvm") version "1.9.20"
     id("io.gitlab.arturbosch.detekt") version "1.23.1"
     id("org.jetbrains.dokka") version "1.8.20"
-    id("org.jreleaser") version "1.5.1"
     `maven-publish`
     signing
+    `java-library`
 }
 
 group = "cl.ravenhill"
-version = "1.0.0"
+version = "1.0.1"
+val projectVersion = version.toString()
 
 repositories {
     mavenCentral()
@@ -48,12 +47,6 @@ java {
     withJavadocJar()
     // Generates a sources jar file containing the sources for this project
     withSourcesJar()
-}
-
-tasks.jar {
-    enabled = true
-    // Remove `plain` postfix from jar file name
-    archiveClassifier.set("")
 }
 
 publishing {
@@ -94,31 +87,28 @@ publishing {
     }
     repositories {
         maven {
-            url = layout.buildDirectory.dir("staging-deploy").get().asFile.toURI()
-        }
-    }
-}
+            val isSnapshot = projectVersion.endsWith("SNAPSHOT")
+            val destination = if (isSnapshot) {
+                "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            } else {
+                "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            }
 
-jreleaser {
-    project {
-        copyright.set("Ignacio Slater M.")
-    }
-    gitRootSearch.set(true)
-    signing {
-        active.set(Active.ALWAYS)
-        armored.set(true)
-    }
-    deploy {
-        maven {
-            nexus2 {
-                create("maven-central") {
-                    active.set(Active.ALWAYS)
-                    url.set("https://s01.oss.sonatype.org/service/local")
-                    closeRepository.set(true)
-                    releaseRepository.set(true)
-                    stagingRepositories.add("build/staging-deploy")
+            url = uri(destination)
+
+            credentials {
+                if (System.getProperty("os.name").startsWith("Windows")) {
+                    username = System.getenv("SonatypeUsername")
+                    password = System.getenv("SonatypePassword")
+                } else {
+                    username = System.getenv("SONATYPE_USERNAME")
+                    password = System.getenv("SONATYPE_PASSWORD")
                 }
             }
         }
     }
+}
+
+signing {
+    sign(publishing.publications)
 }

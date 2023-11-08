@@ -1,12 +1,38 @@
 # StraitJakt: Validate Your Data with Precision
 
 [![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
+[![JitPack](https://jitpack.io/v/r8vnhill/strait-jakt.svg)](https://jitpack.io/#r8vnhill/strait-jakt)
 
-**StraitJakt** is a versatile Kotlin library designed to apply precise constraints to your data, ensuring it remains sane and valid.
+**StraitJakt** is a versatile Kotlin library designed to apply precise constraints to your data, ensuring it remains consistent and valid throughout your application.
 
-## How to Use StraitJakt
+## Features
 
-Here's a brief example of how you can employ StraitJakt to validate user registration data:
+- **Type-Safe Constraints**: Enforce rules on your data using Kotlin's powerful type system.
+- **Declarative Syntax**: Easily define validation rules in a readable and expressive manner.
+- **Comprehensive Validation**: Cover a wide array of data validation scenarios from simple to complex.
+- **Customizable**: Extend or create custom constraints tailored to your needs.
+
+## Getting Started
+
+### Installation
+
+Add the JitPack repository and dependency to your `build.gradle.kts`:
+
+```kotlin
+repositories {
+    maven("https://jitpack.io") {
+        name = "jitpack"
+    }
+}
+
+dependencies {
+    implementation("com.github.r8vnhill:strait-jakt:v1.0.1")
+}
+```
+
+### Usage Example
+
+Validate user registration data with StraitJakt by defining constraints within a `constraints` block:
 
 ```kotlin
 fun registerUser(username: String, name: String, age: Int, password: String) {
@@ -43,24 +69,25 @@ fun registerUser(username: String, name: String, age: Int, password: String) {
 }
 ```
 
-Consider the following scenarios:
+Here's how you can handle validation scenarios:
 
 ```kotlin
-registerUser("johndoe", "John Doe", 17, "password")
+try {
+    registerUser("johndoe", "John Doe", 17, "password")
+} catch (e: CompositeException) {
+    println(e.message)
+    // Handle multiple validation failures
+}
 ```
 
-This will throw an exception with the following message:
+### Exception Handling
 
-```
-Exception in thread "main" cl.ravenhill.jakt.exceptions.CompositeException: Multiple exceptions occurred: { Users should be 18 years of age or older }, { Password should include at least one uppercase letter }, { Password should include at least one digit }
-```
+StraitJakt throws a `CompositeException` when multiple constraints fail, allowing you to handle exceptions in a granular and informative way.
 
-```kotlin
-registerUser("johndoe", "John Doe", 18, "Password")
-```
+## Contributing
 
-This will throw an exception with the following message:
+We welcome contributions! Please see our [Contribution Guidelines](CONTRIBUTING.md) for more information.
 
-```
-StringConstraintException: Password should include at least one digit
-```
+## License
+
+StraitJakt is licensed under the [BSD 2-Clause License](LICENSE).
