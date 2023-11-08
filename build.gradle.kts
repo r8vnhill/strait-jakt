@@ -87,6 +87,7 @@ publishing {
     }
     repositories {
         maven {
+            // Not used currently
             val isSnapshot = projectVersion.endsWith("SNAPSHOT")
             val destination = if (isSnapshot) {
                 "https://s01.oss.sonatype.org/content/repositories/snapshots/"
@@ -107,8 +108,4 @@ publishing {
             }
         }
     }
-}
-
-signing {
-    sign(publishing.publications)
 }
