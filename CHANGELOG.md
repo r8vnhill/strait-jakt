@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Made adjustments to project settings files for improved project configuration.
+- Refactored `CollectionConstraint`:
+  - Updated to support generic collections, enhancing flexibility and ensuring type safety.
+  - Previously used wildcards are replaced with generic types to prevent unexpected behaviors and errors.
 
 ### Improved
 - Enhanced documentation for `BeAlphanumeric` and `BeEmpty` classes, providing more comprehensive explanations and code comments for better readability and understanding.

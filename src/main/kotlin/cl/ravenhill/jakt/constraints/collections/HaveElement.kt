@@ -20,6 +20,6 @@ package cl.ravenhill.jakt.constraints.collections
  * @since 2.0.0
  * @version 2.0.0
  */
-data class HaveElement<T>(private val element: T) : CollectionConstraint {
-  override val validator = { collection: Collection<*> -> element in collection }
+data class HaveElement<T>(private val element: T) : CollectionConstraint<T> {
+  override val validator = { collection: Collection<T> -> element in collection }
 }

@@ -30,7 +30,7 @@ import cl.ravenhill.jakt.exceptions.CollectionConstraintException
  * @since 1.0.0
  * @version 1.0.0
  */
-interface CollectionConstraint : Constraint<Collection<*>> {
+interface CollectionConstraint<T> : Constraint<Collection<T>> {
 
     /**
      * Generates a constraint violation exception specific to collections.

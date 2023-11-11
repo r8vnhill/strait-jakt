@@ -13,6 +13,6 @@ package cl.ravenhill.jakt.constraints.collections
  * @since 2.0.0
  * @version 2.0.0
  */
-data object BeEmpty : CollectionConstraint {
-    override val validator = { value: Collection<*> -> value.isEmpty() }
+data object BeEmpty : CollectionConstraint<Any?> {
+    override val validator = { value: Collection<Any?> -> value.isEmpty() }
 }

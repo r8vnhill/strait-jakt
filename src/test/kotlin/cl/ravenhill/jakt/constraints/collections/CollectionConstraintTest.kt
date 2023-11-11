@@ -13,8 +13,8 @@ class CollectionConstraintTest : FreeSpec({
         "should be able to generate an exception" {
             checkAll(Arb.string()) { description ->
                 shouldThrowWithMessage<CollectionConstraintException>(description) {
-                    throw object : CollectionConstraint {
-                        override val validator = { _: Collection<*> -> false }
+                    throw object : CollectionConstraint<Any?> {
+                        override val validator = { _: Collection<Any?> -> false }
                     }.generateException(description)
                 }
             }
