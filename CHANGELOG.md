@@ -30,6 +30,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improved
 - Enhanced documentation for `BeAlphanumeric` and `BeEmpty` classes, providing more comprehensive explanations and code comments for better readability and understanding.
+- Test coverage in `JaktTest`:
+  - Added assertions to check the behavior of the `BeEqualTo` constraint.
+  - Included tests for `CompositeException` handling.
+  - Ensured successful application of constraints and correct exception throwing when constraints are not met.
+
 
 ## [1.1.0] - 2023-11-08
 

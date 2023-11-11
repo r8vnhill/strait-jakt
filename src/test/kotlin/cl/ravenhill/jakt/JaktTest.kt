@@ -2,16 +2,22 @@ package cl.ravenhill.jakt
 
 import cl.ravenhill.jakt.arbs.collectionHaveSize
 import cl.ravenhill.jakt.arbs.datatypes.anyPrimitive
+import cl.ravenhill.jakt.constraints.ints.BeEqualTo
+import cl.ravenhill.jakt.exceptions.CompositeException
+import io.kotest.assertions.throwables.shouldNotThrow
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.result.shouldBeFailure
 import io.kotest.matchers.result.shouldBeSuccess
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNot
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.int
 import io.kotest.property.arbitrary.list
 import io.kotest.property.arbitrary.string
 import io.kotest.property.checkAll
+import kotlin.test.DefaultAsserter.fail
 
 class JaktTest : FreeSpec({
 
@@ -141,6 +147,50 @@ class JaktTest : FreeSpec({
                     }
                 }
             }
+
+            "should be able to invoke a [String] to create a [StringScope]" {
+                checkAll<String> { message ->
+                    with(Jakt.Scope()) {
+                        message { 1 must BeEqualTo(1) }
+                        results.last().shouldBeSuccess()
+                        results.last().getOrNull() shouldBe 1
+                    }
+                }
+            }
+        }
+
+        "should be able to apply a series of constraints when" - {
+            "the `skipChecks` flag is set to `true` should not throw an exception" {
+                Jakt.skipChecks = true
+                shouldNotThrow<CompositeException> {
+                    Jakt.constraints {
+                        "1" { 1 must BeEqualTo(2) }
+                        "2" { 2 must BeEqualTo(3) }
+                        "3" { 3 must BeEqualTo(4) }
+                    }
+                }
+                Jakt.skipChecks = false
+            }
+
+            "all the constraints are met should not throw an exception" {
+                shouldNotThrow<CompositeException> {
+                    Jakt.constraints {
+                        "1" { 1 must BeEqualTo(1) }
+                        "2" { 2 must BeEqualTo(2) }
+                        "3" { 3 must BeEqualTo(3) }
+                    }
+                }
+            }
+
+             "any of the constraints are not met should throw an exception" {
+                 shouldThrow<CompositeException> {
+                     Jakt.constraints {
+                         "1" { 1 must BeEqualTo(1) }
+                         "2" { 2 must BeEqualTo(3) }
+                         "3" { 3 must BeEqualTo(3) }
+                     }
+                 }
+             }
         }
     }
 })
