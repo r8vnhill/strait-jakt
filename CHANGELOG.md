@@ -16,13 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `BeAlphanumericTest` for validating alphanumeric strings.
   - `BeEmptyTest` for validating empty strings.
   - `ContainTest` for validating strings against regular expressions.
-- `BeMonotonicallyIncreasing` Constraint: Validates that a collection of elements is monotonically increasing, useful for sorted lists and sequences.
+- `BeMonotonicallyIncreasing` Constraint: Validates that a collection of elements is monotonically increasing, useful for sorted lists and sequences.    
 - Special Characters Generator in `Strings` (datatypes): Facilitates creating test datasets with non-alphanumeric characters.
 - `BeMonotonicallyDecreasing` Constraint:
   - A new constraint designed to validate if a collection of elements is monotonically decreasing.
   - Useful in scenarios such as verifying sorted arrays in descending order.
 - `BeMonotonicallyDecreasingTest`:
   - A test suite developed to ensure the correctness of the `BeMonotonicallyDecreasing` constraint under various conditions.
+- `BeAtLeast` Constraint:
+  - A new constraint for checking if a numerical value (both Double and Int) is at least a specified minimum.
+  - Accompanied by test suites to ensure functionality for both Double and Int types.
 
 ### Removed
 - Obsolete Pair Constraints:
@@ -36,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CollectionConstraint` Refactoring:
   - Enhanced to support generic collections.
   - Replaced wildcards with generic types for increased type safety and to avoid unexpected behaviors.
+- Refactored `BeInRange` Constraint:
+  - Updated for better extensibility and ease of future enhancements.
+
 
 ### Improved
 - Documentation:

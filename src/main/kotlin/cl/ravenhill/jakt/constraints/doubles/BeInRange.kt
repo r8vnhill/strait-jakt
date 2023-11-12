@@ -24,7 +24,7 @@ import cl.ravenhill.jakt.utils.DoubleRange
  * @since 1.0.0
  * @version 1.0.0
  */
-data class BeInRange(val range: DoubleRange) : DoubleConstraint {
+open class BeInRange(val range: DoubleRange) : DoubleConstraint {
 
     override val validator = { value: Double -> value in range }
 }

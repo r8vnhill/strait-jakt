@@ -1,5 +1,7 @@
 package cl.ravenhill.jakt.constraints.ints
 
+import cl.ravenhill.jakt.constraints.BeAtLeastConstraint
+
 /**
  * Represents a constraint that checks if a given [Int] value is greater than or equal to a specified minimum value.
  *
@@ -21,4 +23,4 @@ package cl.ravenhill.jakt.constraints.ints
  * @since 1.0.0
  * @version 1.0.0
  */
-data class BeAtLeast(val minInclusive: Int) : BeInRange(minInclusive..Int.MAX_VALUE)
+data class BeAtLeast(override val minInclusive: Int) : IntConstraint, BeAtLeastConstraint<Int>
