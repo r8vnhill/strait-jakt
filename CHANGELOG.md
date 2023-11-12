@@ -8,33 +8,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.0] - TBD
 
 ### Added
-- `BeAlphanumericTest` to provide testing for alphanumeric string validation.
-- `StringConstraintTest` for testing generic string constraints.
-- Special characters generator (`Strings` in datatypes) for creating test datasets with non-alphanumeric characters.
-- New string validation constraints:
-    - `BeAlphanumeric` to validate if a string is composed solely of alphanumeric characters.
-    - `BeEmpty` to check if a string is empty.
-    - `Contain` to ensure a string matches a specified regular expression.
-- Test suites for the newly added string constraints:
-    - `BeEmptyTest` for testing the `BeEmpty` constraint.
-    - `ContainTest` for testing the `Contain` constraint.
-- `BeMonotonicallyIncreasing` constraint for validating collections of elements to ensure they are monotonically increasing. This constraint is particularly useful in contexts such as sorted lists or sequences where the order of elements is crucial.
+- New String Validation Constraints:
+  - `BeAlphanumeric`: Validates if a string contains only alphanumeric characters.
+  - `BeEmpty`: Checks if a string is empty.
+  - `Contain`: Ensures a string matches a specified regular expression.
+- Test Suites for String Constraints:
+  - `BeAlphanumericTest` for validating alphanumeric strings.
+  - `BeEmptyTest` for validating empty strings.
+  - `ContainTest` for validating strings against regular expressions.
+- `BeMonotonicallyIncreasing` Constraint: Validates that a collection of elements is monotonically increasing, useful for sorted lists and sequences.
+- Special Characters Generator in `Strings` (datatypes): Facilitates creating test datasets with non-alphanumeric characters.
+- `BeMonotonicallyDecreasing` Constraint:
+  - A new constraint designed to validate if a collection of elements is monotonically decreasing.
+  - Useful in scenarios such as verifying sorted arrays in descending order.
+- `BeMonotonicallyDecreasingTest`:
+  - A test suite developed to ensure the correctness of the `BeMonotonicallyDecreasing` constraint under various conditions.
 
 ### Removed
-- Pair constraints (`BeFinite.kt`, `BeStrictlyOrdered.kt`, `PairConstraint.kt`) and their corresponding tests. These constraints were found to be obsolete or redundant.
+- Obsolete Pair Constraints:
+  - `BeFinite.kt`
+  - `BeStrictlyOrdered.kt`
+  - `PairConstraint.kt`
+  - Corresponding tests for these constraints.
 
 ### Changed
-- Made adjustments to project settings files for improved project configuration.
-- Refactored `CollectionConstraint`:
-  - Updated to support generic collections, enhancing flexibility and ensuring type safety.
-  - Previously used wildcards are replaced with generic types to prevent unexpected behaviors and errors.
+- Project Settings Files: Adjustments made for improved project configuration.
+- `CollectionConstraint` Refactoring:
+  - Enhanced to support generic collections.
+  - Replaced wildcards with generic types for increased type safety and to avoid unexpected behaviors.
 
 ### Improved
-- Enhanced documentation for `BeAlphanumeric` and `BeEmpty` classes, providing more comprehensive explanations and code comments for better readability and understanding.
-- Test coverage in `JaktTest`:
-  - Added assertions to check the behavior of the `BeEqualTo` constraint.
-  - Included tests for `CompositeException` handling.
-  - Ensured successful application of constraints and correct exception throwing when constraints are not met.
+- Documentation:
+  - `BeAlphanumeric` and `BeEmpty` classes now have enhanced documentation for better readability and comprehension.
+- `JaktTest` Enhancements:
+  - Added assertions to verify the `BeEqualTo` constraint behavior.
+  - Included comprehensive tests for `CompositeException` handling.
+  - Assured correct application of constraints and appropriate exception handling.
 
 
 ## [1.1.0] - 2023-11-08
