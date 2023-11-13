@@ -1,24 +1,30 @@
 package cl.ravenhill.jakt.constraints.ints
 
+import cl.ravenhill.jakt.constraints.BeAtMostConstraint
+
 /**
- * Represents a constraint that checks if a given [Int] value is less than or equal to a specified maximum value.
+ * Represents a constraint that checks if a given integer value is at most a specified maximum value.
  *
- * This class is a specialization of [BeInRange], where the range is defined from the minimum integer value up to the
- * provided maximum value (inclusive).
- * In essence, it checks if a given integer value lies in the range `[Int.MIN_VALUE, maxInclusive]`.
+ * This class implements both [BeAtMostConstraint] and [IntConstraint] for integers. It is used to validate
+ * that an integer value is less than or equal to the specified maximum value (`maxInclusive`). This constraint
+ * is particularly useful in scenarios where you need to enforce upper limits on numerical values, such as
+ * ensuring values do not exceed a predefined maximum in settings, measurements, or calculations.
  *
  * ## Usage
- * ### Example: Checking if an integer is at most a certain value
+ * ### Example: Validating a value against a maximum limit
  * ```kotlin
- * val constraint = BeAtMost(10)
- * val success = constraint.validator(5) // This will return `true` since 5 is less than or equal to 10
- * val failure = constraint.validator(15) // This will return `false` since 15 is greater than 10
+ * val maxConstraint = BeAtMost(100)
+ * val isValid = maxConstraint.validator(50)  // Returns `true` as 50 is less than 100
+ * val isInvalid = maxConstraint.validator(150) // Returns `false` as 150 exceeds 100
  * ```
  *
- * @param maxInclusive The maximum value (inclusive) that an integer should not exceed to satisfy the constraint.
+ * @param maxInclusive The maximum inclusive value that the integer value should not exceed.
+ * @property validator A lambda function that takes an [Int] and returns a [Boolean] indicating whether the value
+ * is less than or equal to `maxInclusive`.
  *
  * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.2.0
  */
-data class BeAtMost(val maxInclusive: Int) : BeInRange(Int.MIN_VALUE..maxInclusive)
+data class BeAtMost(override val maxInclusive: Int) : BeAtMostConstraint<Int>, IntConstraint
+

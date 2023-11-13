@@ -26,6 +26,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `BeAtLeast` Constraint:
   - A new constraint for checking if a numerical value (both Double and Int) is at least a specified minimum.
   - Accompanied by test suites to ensure functionality for both Double and Int types.
+- `BeAtMost` Constraint:
+  - A new constraint for validating whether a value is less than or equal to a specified maximum.
+  - Useful for enforcing upper limits in various calculations, settings, or measurements.
 
 ### Removed
 - Obsolete Pair Constraints:
@@ -50,7 +53,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added assertions to verify the `BeEqualTo` constraint behavior.
   - Included comprehensive tests for `CompositeException` handling.
   - Assured correct application of constraints and appropriate exception handling.
-
+- Testing Structure:
+  - Refactored existing tests by introducing a generic function for constraint validation.
+  - Updated test cases to align with the new testing approach.
+  - This improvement focuses on enhancing code reusability and readability in tests.
 
 ## [1.1.0] - 2023-11-08
 
