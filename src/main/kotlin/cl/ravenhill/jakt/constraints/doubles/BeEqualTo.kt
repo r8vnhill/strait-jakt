@@ -1,5 +1,6 @@
 package cl.ravenhill.jakt.constraints.doubles
 
+import cl.ravenhill.jakt.constraints.BeEqualToConstraint
 import kotlin.math.abs
 
 /**
@@ -35,7 +36,8 @@ import kotlin.math.abs
  * @since 1.0.0
  * @version 1.0.0
  */
-data class BeEqualTo(val expected: Double, val tolerance: Double = 1e-8) : DoubleConstraint {
+data class BeEqualTo(override val expected: Double, val tolerance: Double = 1e-8) : DoubleConstraint,
+    BeEqualToConstraint<Double> {
 
     init {
         require(tolerance >= 0) { "The tolerance must be non-negative." }

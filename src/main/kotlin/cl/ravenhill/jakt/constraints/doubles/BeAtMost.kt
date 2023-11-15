@@ -27,6 +27,4 @@ import cl.ravenhill.jakt.constraints.BeAtMostConstraint
  * @since 1.0.0
  * @version 1.2.0
  */
-data class BeAtMost(override val maxInclusive: Double) : DoubleConstraint, BeAtMostConstraint<Double> {
-    override val validator = { value: Double -> value <= maxInclusive }
-}
+data class BeAtMost(override val maxInclusive: Double) : DoubleConstraint, BeAtMostConstraint<Double>

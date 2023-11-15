@@ -1,10 +1,16 @@
 package cl.ravenhill.jakt.testfactories
 
 import cl.ravenhill.jakt.arbs.datatypes.orderedPair
+import cl.ravenhill.jakt.arbs.datatypes.orderedTriple
+import cl.ravenhill.jakt.arbs.datatypes.real
 import cl.ravenhill.jakt.constraints.BeAtLeastConstraint
 import cl.ravenhill.jakt.constraints.BeAtMostConstraint
+import cl.ravenhill.jakt.constraints.BeInRangeConstraint
 import cl.ravenhill.jakt.constraints.Constraint
+import cl.ravenhill.jakt.constraints.doubles.BeInRange
 import io.kotest.core.spec.style.freeSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.kotest.property.Arb
 import io.kotest.property.checkAll
@@ -85,3 +91,37 @@ fun <T> `validate BeAtMostConstraint`(
     constraint: (maxInclusive: T) -> BeAtMostConstraint<T>
 ) where T : Comparable<T> =
     `validate Constraint`(gen, constraint) { max, value -> value <= max }
+
+fun <T> `validate BeInRangeConstraint`(
+    gen: Arb<T>,
+    constraint: (range: ClosedRange<T>) -> BeInRangeConstraint<T>
+) where T : Comparable<T> = freeSpec {
+
+    "A [BeInRange] constraint" - {
+        "when created" - {
+            "with a range should set the range correctly" {
+                checkAll(Arb.orderedPair(gen, strict = true)) { (start, end) ->
+                    with(constraint(start..end)) {
+                        range.start shouldBe start
+                        range.endInclusive shouldBe end
+                    }
+                }
+            }
+        }
+
+        "have a validator that" - {
+            "returns true if the value is within the range" {
+                checkAll(Arb.orderedTriple(gen, strict = true)) { (lo, mid, hi) ->
+                    constraint(lo..hi).validator(mid).shouldBeTrue()
+                }
+            }
+
+            "returns false if the value is outside the range" {
+                checkAll(Arb.orderedTriple(gen, strict = true)) { (lo, mid, hi) ->
+                    constraint(lo..mid).validator(hi).shouldBeFalse()
+                    constraint(mid..hi).validator(lo).shouldBeFalse()
+                }
+            }
+        }
+    }
+}
