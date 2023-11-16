@@ -1,5 +1,7 @@
 package cl.ravenhill.jakt.constraints.ints
 
+import cl.ravenhill.jakt.constraints.BeNegativeConstraint
+
 /**
  * Represents a constraint ensuring a provided integer value is negative.
  *
@@ -19,6 +21,6 @@ package cl.ravenhill.jakt.constraints.ints
  * @since 1.0.0
  * @version 1.0.0
  */
-data object BeNegative : IntConstraint {
-    override val validator = { value: Int -> value < 0 }
+data object BeNegative : IntConstraint, BeNegativeConstraint<Int> {
+    override val zero: Int = 0
 }
