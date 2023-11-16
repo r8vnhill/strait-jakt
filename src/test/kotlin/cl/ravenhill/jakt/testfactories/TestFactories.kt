@@ -160,15 +160,15 @@ suspend fun <T> FreeSpecContainerScope.`test BeAtLeast validator`(
  * @param constraint A lambda function that takes a maximum inclusive value and returns a [BeAtMostConstraint].
  * @param T The type parameter which must be [Comparable].
  */
-fun <T> `validate BeAtMostConstraint`(
+suspend fun <T> FreeSpecContainerScope.`validate BeAtMostConstraint`(
     gen: Arb<T>,
     constraint: (maxInclusive: T) -> BeAtMostConstraint<T>
-) where T : Comparable<T> =
-    `test factory binary Constraint validator`(
-        gen,
-        constraint,
-        { max, value -> value <= max },
-        { max, value -> value > max })
+) where T : Comparable<T> = `test binary Constraint validator`(
+    Arb.orderedPair(gen),
+    Arb.orderedPair(gen, strict = true, reverted = true),
+    constraint,
+    { max, value -> value <= max },
+    { max, value -> value > max })
 
 fun <T> `test BeNegative validator`(
     gen: Arb<T>,

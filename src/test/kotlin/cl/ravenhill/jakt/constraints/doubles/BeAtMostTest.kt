@@ -8,5 +8,7 @@ import io.kotest.property.Arb
 
 class BeAtMostTest : FreeSpec({
 
-    include(`validate BeAtMostConstraint`(Arb.real(), ::BeAtMost))
+    "A Be At Most constraint" - {
+        `validate BeAtMostConstraint`(Arb.real(), ::BeAtMost)
+    }
 })

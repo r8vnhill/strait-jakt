@@ -7,5 +7,7 @@ import io.kotest.property.arbitrary.int
 
 class BeAtMostTest : FreeSpec({
 
-    include(`validate BeAtMostConstraint`(Arb.int(), ::BeAtMost))
+    "A Be At Most constraint" - {
+        `validate BeAtMostConstraint`(Arb.int(), ::BeAtMost)
+    }
 })
