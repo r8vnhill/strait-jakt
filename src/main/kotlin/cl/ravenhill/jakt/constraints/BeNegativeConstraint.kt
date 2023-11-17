@@ -1,6 +1,5 @@
 package cl.ravenhill.jakt.constraints
 
-import cl.ravenhill.jakt.exceptions.ConstraintException
 import java.time.LocalDate
 
 

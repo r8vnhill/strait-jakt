@@ -29,6 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `BeAtMost` Constraint:
   - A new constraint for validating whether a value is less than or equal to a specified maximum.
   - Useful for enforcing upper limits in various calculations, settings, or measurements.
+- `BeNegativeConstraint`
+  - A new constraint for checking if a comparable value is negative.
+  - Useful for ensuring that a value is less than "zero".
 
 ### Removed
 - Obsolete Pair Constraints:
