@@ -1,5 +1,7 @@
 package cl.ravenhill.jakt.constraints.ints
 
+import cl.ravenhill.jakt.constraints.BePositiveConstraint
+
 /**
  * Represents a constraint ensuring a provided integer value is positive.
  *
@@ -17,8 +19,8 @@ package cl.ravenhill.jakt.constraints.ints
  *
  * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.2.0
  */
-data object BePositive : IntConstraint {
-    override val validator = { value: Int -> value > 0 }
+data object BePositive : IntConstraint, BePositiveConstraint<Int> {
+    override val zero: Int = 0
 }

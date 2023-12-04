@@ -32,6 +32,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `BeNegativeConstraint`
   - A new constraint for checking if a comparable value is negative.
   - Useful for ensuring that a value is less than "zero".
+- `BePositiveConstraint`
+  - A new constraint for checking if a comparable value is positive.
+  - Useful for ensuring that a value is greater than "zero".
 
 ### Removed
 - Obsolete Pair Constraints:

@@ -1,11 +1,15 @@
 package cl.ravenhill.jakt.assertions.constraints
 
 import cl.ravenhill.jakt.constraints.BeNegativeConstraint
+import cl.ravenhill.jakt.constraints.BePositiveConstraint
+import cl.ravenhill.jakt.constraints.ints.BePositive
 import io.kotest.core.TestConfiguration
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.property.Arb
+import io.kotest.property.arbitrary.nonPositiveInt
+import io.kotest.property.arbitrary.positiveInt
 import io.kotest.property.checkAll
 
 /**
@@ -38,7 +42,7 @@ import io.kotest.property.checkAll
 fun <T> `test BeNegative constraint`(
     trueArb: Arb<T>,
     falseArb: Arb<T>,
-    constraint: () -> BeNegativeConstraint<T>
+    constraint: () -> BeNegativeConstraint<T>,
 ) where T : Comparable<T> = freeSpec {
 
     lateinit var testConstraint: BeNegativeConstraint<T>
@@ -62,6 +66,35 @@ fun <T> `test BeNegative constraint`(
 
                 // Checking zero as it's a boundary condition
                 testConstraint.validator(testConstraint.zero).shouldBeFalse()
+            }
+        }
+    }
+}
+
+fun <T> `test BePositive constraint`(
+    trueArb: Arb<T>,
+    falseArb: Arb<T>,
+    constraint: () -> BePositiveConstraint<T>,
+) where T : Comparable<T> = freeSpec {
+
+    lateinit var testConstraint: BePositiveConstraint<T>
+
+    beforeEach {
+        testConstraint = constraint()
+    }
+
+    "A Be Positive constraint" - {
+        "should have a [validator] that" - {
+            "returns true if the value is positive" {
+                checkAll(trueArb) { value ->
+                    testConstraint.validator(value).shouldBeTrue()
+                }
+            }
+
+            "returns false if the value is non-positive" {
+                checkAll(falseArb) { value ->
+                    testConstraint.validator(value).shouldBeFalse()
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package cl.ravenhill.jakt.constraints.ints
 
+import cl.ravenhill.jakt.assertions.constraints.`test BePositive constraint`
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -11,20 +12,5 @@ import io.kotest.property.arbitrary.positiveInt
 import io.kotest.property.checkAll
 
 class BePositiveTest : FreeSpec({
-
-    "A [BePositive] constraint" - {
-        "should have a [validator] that" - {
-            "returns true if the value is positive" {
-                checkAll(Arb.positiveInt()) { value ->
-                    BePositive.validator(value).shouldBeTrue()
-                }
-            }
-
-            "returns false if the value is non-positive" {
-                checkAll(Arb.nonPositiveInt()) { value ->
-                    BePositive.validator(value).shouldBeFalse()
-                }
-            }
-        }
-    }
+    include(`test BePositive constraint`(Arb.positiveInt(), Arb.nonPositiveInt()) { BePositive })
 })
