@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "cl.ravenhill"
-version = "1.1.0"
+version = "1.2.0"
 val projectVersion = version.toString()
 
 repositories {
@@ -81,29 +81,6 @@ publishing {
                     connection.set("scm:git:git@github.com:r8vnhill/strait-jakt.git")
                     developerConnection.set("scm:git:ssh:git@github.com:r8vnhill/strait-jakt.git")
                     url.set("https://github.com/r8vnhill/strait-jakt")
-                }
-            }
-        }
-    }
-    repositories {
-        maven {
-            // Not used currently
-            val isSnapshot = projectVersion.endsWith("SNAPSHOT")
-            val destination = if (isSnapshot) {
-                "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-            } else {
-                "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            }
-
-            url = uri(destination)
-
-            credentials {
-                if (System.getProperty("os.name").startsWith("Windows")) {
-                    username = System.getenv("SonatypeUsername")
-                    password = System.getenv("SonatypePassword")
-                } else {
-                    username = System.getenv("SONATYPE_USERNAME")
-                    password = System.getenv("SONATYPE_PASSWORD")
                 }
             }
         }

@@ -9,8 +9,35 @@ import cl.ravenhill.jakt.constraints.Constraint
 import cl.ravenhill.jakt.exceptions.CompositeException
 import cl.ravenhill.jakt.exceptions.ConstraintException
 
+/**
+ * Provides a mechanism for enforcing contracts and constraints on data.
+ *
+ * `Jakt` allows the definition and enforcement of constraints within a specified scope.
+ * It is useful for validating object states, ensuring that certain conditions or rules are met.
+ *
+ * ## Features
+ * - Allows defining custom constraints and contracts using a DSL-like syntax.
+ * - Supports skipping constraint checks globally via the `skipChecks` flag.
+ * - Throws a `CompositeException` if one or more constraints are not fulfilled.
+ *
+ * ## Example: Enforcing a contract
+ * ```kotlin
+ * data class Person(val name: String, val age: Int) {
+ *     init {
+ *         Jakt.constraints {
+ *             "Name must not be empty" { name mustNot BeEmpty }
+ *             "Age must be greater than 0" { age must BePositive }
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * @property skipChecks A global flag to skip constraint checks if set to `true`.
+ * @property shortCircuit A global flag to stop checking constraints after the first failure.
+ */
 object Jakt {
     var skipChecks = false
+    var shortCircuit = false
 
     /**
      * Enforces the contract of the given builder.
@@ -87,14 +114,14 @@ object Jakt {
              * @receiver the current value to be validated.
              */
 
-            infix fun <T, C : Constraint<T>> T.must(constraint: C) =
-                _results.add(
-                    if (!constraint.validator(this)) {
-                        Result.failure(constraint.generateException(message))
-                    } else {
-                        Result.success(this)
-                    }
-                )
+            infix fun <T, C : Constraint<T>> T.must(constraint: C): Unit {
+                _results += if (!constraint.validator(this)) {
+                    if (shortCircuit) throw constraint.generateException(message)
+                    Result.failure(constraint.generateException(message))
+                } else {
+                    Result.success(this)
+                }
+            }
 
             /**
              * Infix function that validates that the current value does not satisfy the specified
@@ -103,14 +130,14 @@ object Jakt {
              * @param constraint the requirement to validate against.
              * @receiver the current value to be validated.
              */
-            infix fun <T, C : Constraint<T>> T.mustNot(constraint: C) =
-                _results.add(
-                    if (constraint.validator(this)) {
-                        Result.failure(constraint.generateException(message))
-                    } else {
-                        Result.success(this)
-                    }
-                )
+            infix fun <T, C : Constraint<T>> T.mustNot(constraint: C): Unit {
+                _results += if (constraint.validator(this)) {
+                    if (shortCircuit) throw constraint.generateException(message)
+                    Result.failure(constraint.generateException(message))
+                } else {
+                    Result.success(this)
+                }
+            }
 
             /**
              * Defines a [Constraint] based on a predicate.
