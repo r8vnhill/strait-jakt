@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "cl.ravenhill"
-version = "1.2.0"
+version = "1.2.1"
 val projectVersion = version.toString()
 
 repositories {
