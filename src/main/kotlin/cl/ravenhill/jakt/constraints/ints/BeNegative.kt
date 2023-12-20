@@ -15,11 +15,7 @@ import cl.ravenhill.jakt.constraints.BeNegativeConstraint
  * val isNotNegative = BeNegative.validator(5) // Returns `false`
  * ```
  *
- * @property validator A lambda function that checks if the provided integer value is negative.
- *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.0.0
- * @version 1.0.0
+ * @property zero The integer value representing zero.
  */
 data object BeNegative : IntConstraint, BeNegativeConstraint<Int> {
     override val zero: Int = 0

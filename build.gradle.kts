@@ -103,24 +103,22 @@ publishing {
     repositories {
         maven {
             name = "OSSRH"
-            url = if (projectVersion.endsWith("SNAPSHOT")) {
-                uri("https://oss.sonatype.org/content/repositories/snapshots")
+            url = if (project.version.toString().endsWith("SNAPSHOT")) {
+                uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
             } else {
-                uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
             }
             credentials {
                 username = if (System.getProperty("os.name").startsWith("Windows")) {
                     System.getenv("SonatypeUsername")
                 } else {
-                    System.getProperty("SONATYPE_USERNAME")
-                }.apply {
-                    check(!isNullOrEmpty()) { "Sonatype username not found." }
-                    password = if (System.getProperty("os.name").startsWith("Windows")) {
-                        System.getenv("SonatypePassword")
-                    } else {
-                        System.getProperty("SONATYPE_PASSWORD")
-                    }.apply { check(!isNullOrEmpty()) { "Sonatype password not found." } }
-                }
+                    System.getenv("SONATYPE_USERNAME")
+                }.apply { check(!isNullOrEmpty()) { "Sonatype username not found." } }
+                password = if (System.getProperty("os.name").startsWith("Windows")) {
+                    System.getenv("SonatypePassword")
+                } else {
+                    System.getenv("SONATYPE_PASSWORD")
+                }.apply { check(!isNullOrEmpty()) { "Sonatype password not found." } }
             }
         }
     }

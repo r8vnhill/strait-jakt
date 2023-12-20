@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [1.3.1] - 2023-12-20
+
+### Added
+- **`BePositive` Constraint:**
+  - [EXPERIMENTAL] Introduced the `BePositive` constraint for validating positive double values. This new constraint enhances the library's capabilities in handling numerical validations.
+
+- **ExperimentalJakt Annotation:**
+  - Introduced the `ExperimentalJakt` annotation as a marker for experimental features within the Jakt project. This annotation helps in identifying features that are still in the experimental phase and may be subject to change.
+
+### Changed
+- **Kotlin Version Update:**
+  - Downgraded the Kotlin version to `1.9.21` to resolve compatibility issues.
+
 ## [1.3.0] - 2023-12-20
 
 ### Changed
