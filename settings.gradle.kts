@@ -1,12 +1,14 @@
+rootProject.name = "jakt"
+
 pluginManagement {
     repositories {
-        mavenCentral()
         gradlePluginPortal()
+    }
+
+    plugins {
+        kotlin("jvm") version extra["kotlin.version"] as String
+        id("io.gitlab.arturbosch.detekt") version extra["detekt.version"] as String
+        id("org.jetbrains.dokka") version extra["dokka.version"] as String
     }
 }
 
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
-}
-
-rootProject.name = "jakt"

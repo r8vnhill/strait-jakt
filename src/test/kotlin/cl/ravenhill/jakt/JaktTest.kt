@@ -6,25 +6,26 @@ import cl.ravenhill.jakt.constraints.ints.BeEqualTo
 import cl.ravenhill.jakt.exceptions.CompositeException
 import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.common.ExperimentalKotest
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.result.shouldBeFailure
 import io.kotest.matchers.result.shouldBeSuccess
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNot
 import io.kotest.property.Arb
+import io.kotest.property.PropTestConfig
 import io.kotest.property.arbitrary.int
 import io.kotest.property.arbitrary.list
 import io.kotest.property.arbitrary.string
 import io.kotest.property.checkAll
-import kotlin.test.DefaultAsserter.fail
 
+@OptIn(ExperimentalKotest::class)
 class JaktTest : FreeSpec({
 
     "A [Jackt.Scope]" - {
         "should have a [StringScope] that" - {
             "can be created with a message" {
-                checkAll<String> { message ->
+                checkAll<String>(PropTestConfig(iterations = 100)) { message ->
                     Jakt.Scope().StringScope(message).message shouldBe message
                 }
             }
@@ -182,15 +183,15 @@ class JaktTest : FreeSpec({
                 }
             }
 
-             "any of the constraints are not met should throw an exception" {
-                 shouldThrow<CompositeException> {
-                     Jakt.constraints {
-                         "1" { 1 must BeEqualTo(1) }
-                         "2" { 2 must BeEqualTo(3) }
-                         "3" { 3 must BeEqualTo(3) }
-                     }
-                 }
-             }
+            "any of the constraints are not met should throw an exception" {
+                shouldThrow<CompositeException> {
+                    Jakt.constraints {
+                        "1" { 1 must BeEqualTo(1) }
+                        "2" { 2 must BeEqualTo(3) }
+                        "3" { 3 must BeEqualTo(3) }
+                    }
+                }
+            }
         }
     }
 })

@@ -1,7 +1,11 @@
+val kotestVersion = extra["kotest.version"] as String
+val dokkaVersion = extra["dokka.version"] as String
+val detektVersion = extra["detekt.version"] as String
+
 plugins {
-    kotlin("jvm") version "1.9.20"
-    id("io.gitlab.arturbosch.detekt") version "1.23.1"
-    id("org.jetbrains.dokka") version "1.8.20"
+    kotlin("jvm")
+    id("io.gitlab.arturbosch.detekt")
+    id("org.jetbrains.dokka")
     `maven-publish`
     signing
     `java-library`
@@ -17,16 +21,11 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    testImplementation("io.kotest:kotest-assertions-core:5.7.2")
-    testImplementation("io.kotest:kotest-property:5.7.2")
-    testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
-    // region : -== DOKKA ==-
-    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.8.20")
-    // endregion DOKKA
-
-    // region : -== DETEKT ==-
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
-    // endregion DETEKT
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest:kotest-property:$kotestVersion")
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:$dokkaVersion")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 }
 
 tasks.test {
@@ -34,7 +33,7 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(17)
 }
 
 detekt {

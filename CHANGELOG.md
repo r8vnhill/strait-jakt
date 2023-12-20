@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- **Updated Dependencies:**
+  - **Kotest:** Upgraded the Kotest framework for assertions, properties, and junit5 runner to their latest versions. Adjustments made in configuration files to align with the new versions.
+  - **Dokka Plugin:** Updated to its newer version. Configuration files modified to accommodate changes in the plugin.
+  - **Detekt Plugin:** Upgraded to the latest version. Necessary adjustments made in the respective configuration files.
+
 ## [1.2.0] - 2023-12-04
 
 ### Added
