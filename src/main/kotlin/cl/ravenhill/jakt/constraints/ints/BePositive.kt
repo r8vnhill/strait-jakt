@@ -16,10 +16,6 @@ import cl.ravenhill.jakt.constraints.BePositiveConstraint
  * ```
  *
  * @property validator A lambda function that evaluates whether the provided integer value is positive.
- *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.0.0
- * @version 1.2.0
  */
 data object BePositive : IntConstraint, BePositiveConstraint<Int> {
     override val zero: Int = 0

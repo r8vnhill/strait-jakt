@@ -21,10 +21,6 @@ import cl.ravenhill.jakt.constraints.BeAtMostConstraint
  * @param maxInclusive The maximum inclusive value that the integer value should not exceed.
  * @property validator A lambda function that takes an [Int] and returns a [Boolean] indicating whether the value
  * is less than or equal to `maxInclusive`.
- *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.0.0
- * @version 1.2.0
  */
 data class BeAtMost(override val maxInclusive: Int) : BeAtMostConstraint<Int>, IntConstraint
 

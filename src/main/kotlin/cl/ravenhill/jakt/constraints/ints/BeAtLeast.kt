@@ -18,9 +18,5 @@ import cl.ravenhill.jakt.constraints.BeAtLeastConstraint
  * ```
  *
  * @param minInclusive The minimum value (inclusive) that an integer should have to satisfy the constraint.
- *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.0.0
- * @version 1.0.0
  */
 data class BeAtLeast(override val minInclusive: Int) : IntConstraint, BeAtLeastConstraint<Int>

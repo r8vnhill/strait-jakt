@@ -1,7 +1,7 @@
 # StraitJakt: Validate Your Data with Precision
 
 [![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
-[![JitPack](https://jitpack.io/v/r8vnhill/strait-jakt.svg)](https://jitpack.io/#r8vnhill/strait-jakt)
+[![Maven Central](https://img.shields.io/maven-central/v/cl.ravenhill/strait-jakt.svg)](https://search.maven.org/artifact/cl.ravenhill/strait-jakt)
 
 **StraitJakt** is a versatile Kotlin library designed to apply precise constraints to your data, ensuring it remains consistent and valid throughout your application.
 
@@ -20,13 +20,11 @@ Add the JitPack repository and dependency to your `build.gradle.kts`:
 
 ```kotlin
 repositories {
-    maven("https://jitpack.io") {
-        name = "jitpack"
-    }
+    mavenCentral()
 }
 
 dependencies {
-    implementation("com.github.r8vnhill:strait-jakt:1.2.0")
+    implementation("cl.ravenhill:strait-jakt:1.3.1")    // Replace with latest version
 }
 ```
 
