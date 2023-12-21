@@ -4,6 +4,7 @@ import cl.ravenhill.jakt.arbs.collectionHaveSize
 import cl.ravenhill.jakt.arbs.datatypes.anyPrimitive
 import cl.ravenhill.jakt.constraints.ints.BeEqualTo
 import cl.ravenhill.jakt.exceptions.CompositeException
+import cl.ravenhill.jakt.exceptions.ConstraintException
 import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.common.ExperimentalKotest
@@ -12,6 +13,7 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.result.shouldBeFailure
 import io.kotest.matchers.result.shouldBeSuccess
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import io.kotest.property.Arb
 import io.kotest.property.PropTestConfig
 import io.kotest.property.arbitrary.int
@@ -19,7 +21,7 @@ import io.kotest.property.arbitrary.list
 import io.kotest.property.arbitrary.string
 import io.kotest.property.checkAll
 
-@OptIn(ExperimentalKotest::class)
+@OptIn(ExperimentalKotest::class, ExperimentalJakt::class)
 class JaktTest : FreeSpec({
 
     "A [Jackt.Scope]" - {
@@ -193,5 +195,17 @@ class JaktTest : FreeSpec({
                 }
             }
         }
+
+        "can enforce a constraint" - {
+            "with a specific exception" {
+                shouldThrow<CompositeException> {
+                    Jakt.constraints {
+                        "1"(::TestConstraintException) { 1 must BeEqualTo(2) }
+                    }
+                }.throwables.first().shouldBeInstanceOf<TestConstraintException>().message shouldBe "1"
+            }
+        }
     }
 })
+
+private class TestConstraintException(message: String) : ConstraintException(message)
