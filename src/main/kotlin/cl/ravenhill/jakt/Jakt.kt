@@ -5,6 +5,8 @@
 
 package cl.ravenhill.jakt
 
+import cl.ravenhill.jakt.Jakt.shortCircuit
+import cl.ravenhill.jakt.Jakt.skipChecks
 import cl.ravenhill.jakt.constraints.Constraint
 import cl.ravenhill.jakt.exceptions.CompositeException
 import cl.ravenhill.jakt.exceptions.ConstraintException
@@ -77,9 +79,6 @@ object Jakt {
      *
      * @property results The list of results of evaluating the contract.
      * @property failures The list of exceptions thrown by the contract.
-     *
-     * @since 2.0.0
-     * @version 2.0.0
      */
     class Scope {
         private val _results: MutableList<Result<*>> = mutableListOf()
@@ -92,11 +91,20 @@ object Jakt {
          * Defines a clause of a contract.
          *
          * @receiver The message key for the clause.
-         * @param value A lambda expression that defines the predicate for the clause.
+         * @param predicate A lambda expression that defines the predicate for the clause.
          *
          * @return A [StringScope] instance that can be used to define a [Constraint] for the clause.
          */
-        inline operator fun String.invoke(value: StringScope.() -> Unit) = StringScope(this).apply { value() }
+        inline operator fun String.invoke(predicate: StringScope.() -> Unit) = StringScope(this).apply { predicate() }
+
+        @ExperimentalJakt
+        inline operator fun String.invoke(
+            noinline exceptionGenerator: (String) -> ConstraintException,
+            predicate: StringScope.() -> Unit,
+        ) = StringScope(this).apply {
+            this.exceptionGenerator = exceptionGenerator
+            predicate()
+        }
 
         /**
          * A scope for defining a [Constraint] for a contract clause.
@@ -106,6 +114,8 @@ object Jakt {
         inner class StringScope(val message: String) {
             val outerScope = this@Scope
 
+            var exceptionGenerator: ((String) -> ConstraintException)? = null
+
             /**
              * Infix function that validates that the current value satisfies the specified
              * requirement.
@@ -114,10 +124,10 @@ object Jakt {
              * @receiver the current value to be validated.
              */
 
-            infix fun <T, C : Constraint<T>> T.must(constraint: C): Unit {
+            infix fun <T, C : Constraint<T>> T.must(constraint: C) {
                 _results += if (!constraint.validator(this)) {
-                    if (shortCircuit) throw constraint.generateException(message)
-                    Result.failure(constraint.generateException(message))
+                    if (shortCircuit) throw exceptionGenerator?.invoke(message) ?: constraint.generateException(message)
+                    Result.failure(exceptionGenerator?.invoke(message) ?: constraint.generateException(message))
                 } else {
                     Result.success(this)
                 }
@@ -130,10 +140,10 @@ object Jakt {
              * @param constraint the requirement to validate against.
              * @receiver the current value to be validated.
              */
-            infix fun <T, C : Constraint<T>> T.mustNot(constraint: C): Unit {
+            infix fun <T, C : Constraint<T>> T.mustNot(constraint: C) {
                 _results += if (constraint.validator(this)) {
-                    if (shortCircuit) throw constraint.generateException(message)
-                    Result.failure(constraint.generateException(message))
+                    if (shortCircuit) throw exceptionGenerator?.invoke(message) ?: constraint.generateException(message)
+                    Result.failure(exceptionGenerator?.invoke(message) ?: constraint.generateException(message))
                 } else {
                     Result.success(this)
                 }
@@ -144,13 +154,13 @@ object Jakt {
              *
              * @param predicate The predicate that defines the clause.
              */
-            fun constraint(predicate: () -> Boolean) = _results.add(
-                if (predicate()) {
+            fun constraint(predicate: () -> Boolean) {
+                _results += if (predicate()) {
                     Result.success(Unit)
                 } else {
                     Result.failure(ConstraintException { message })
                 }
-            )
+            }
 
             /**
              * Represents the clause as a string using its message key.

@@ -21,11 +21,7 @@ package cl.ravenhill.jakt.exceptions
  * @param lazyMessage A lambda that computes the error message when the exception is thrown.
  *
  * @constructor Creates a new `ConstraintException` with the specified `lazyMessage`.
- *
- * @throws Exception Thrown with the computed error message when the exception is raised.
- *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.0.0
- * @version 1.0.0
  */
-open class ConstraintException(lazyMessage: () -> String) : Exception(lazyMessage())
+open class ConstraintException(lazyMessage: () -> String) : Exception(lazyMessage()) {
+    constructor(message: String) : this({ message })
+}
