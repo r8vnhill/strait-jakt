@@ -9,14 +9,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Added
 
-- **`BeFinite` Constraint:**
+- [EXPERIMENTAL] **`BeFinite` Constraint:**
   - Introduced the `BeFinite` object in the `cl.ravenhill.jakt.constraints.doubles` package.
   - This new constraint implements the `DoubleConstraint` interface and is designed to check if a given `Double` value is finite.
   - The primary purpose is to enhance the validation capabilities for `Double` values, ensuring they are neither infinite nor `NaN`.
-- **`BeInfinite` Double Constraint:**
+- [EXPERIMENTAL] **`BeInfinite` Double Constraint:**
   - Introduced the `BeInfinite` data object in the `constraints.doubles` package.
   - This constraint is designed to validate whether a `Double` value is infinite (either positive or negative infinity).
   - It serves as a crucial tool for scenarios involving mathematical computations or simulations where the concept of infinity is relevant, such as in cases of overflow.
+- [EXPERIMENTAL] **`BeNaN` Double Constraint:**
+  - Introduced the `BeNaN` data object within the library, specifically for validating if a `Double` value is NaN (Not a Number).
+  - This new feature significantly enhances the library's capabilities by enabling the detection of NaN values in numerical computations, which is crucial for accurate and reliable data validation in mathematical and scientific applications.
 
 ## [1.3.1] - 2023-12-20
 
