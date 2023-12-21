@@ -16,15 +16,13 @@
 
 ### Installation
 
-Add the JitPack repository and dependency to your `build.gradle.kts`:
-
 ```kotlin
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("cl.ravenhill:strait-jakt:1.3.1")    // Replace with latest version
+    implementation("cl.ravenhill:strait-jakt:1.4.0")    // Replace with latest version
 }
 ```
 
