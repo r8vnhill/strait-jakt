@@ -8,10 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ## [Unreleased]
 
 ### Added
+
 - **`BeFinite` Constraint:**
   - Introduced the `BeFinite` object in the `cl.ravenhill.jakt.constraints.doubles` package.
   - This new constraint implements the `DoubleConstraint` interface and is designed to check if a given `Double` value is finite.
   - The primary purpose is to enhance the validation capabilities for `Double` values, ensuring they are neither infinite nor `NaN`.
+- **`BeInfinite` Double Constraint:**
+  - Introduced the `BeInfinite` data object in the `constraints.doubles` package.
+  - This constraint is designed to validate whether a `Double` value is infinite (either positive or negative infinity).
+  - It serves as a crucial tool for scenarios involving mathematical computations or simulations where the concept of infinity is relevant, such as in cases of overflow.
 
 ## [1.3.1] - 2023-12-20
 
