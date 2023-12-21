@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+### Added
+- **`BeFinite` Constraint:**
+  - Introduced the `BeFinite` object in the `cl.ravenhill.jakt.constraints.doubles` package.
+  - This new constraint implements the `DoubleConstraint` interface and is designed to check if a given `Double` value is finite.
+  - The primary purpose is to enhance the validation capabilities for `Double` values, ensuring they are neither infinite nor `NaN`.
+
 ## [1.3.1] - 2023-12-20
 
 ### Added
