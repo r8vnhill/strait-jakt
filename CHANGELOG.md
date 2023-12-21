@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 
+## Added
+- [EXPERIMENTAL] [#1](https://github.com/r8vnhill/strait-jakt/issues/1) **Custom Exception Specification for Constraints**
+
 ## [1.3.1] - 2023-12-20
 
 ### Added
