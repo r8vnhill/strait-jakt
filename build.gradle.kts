@@ -3,7 +3,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 val kotestVersion = extra["kotest.version"] as String
 val dokkaVersion = extra["dokka.version"] as String
 val detektVersion = extra["detekt.version"] as String
-
+val jaktVersion = extra["jakt.version"] as String
 plugins {
     `maven-publish`
     id("io.gitlab.arturbosch.detekt")
@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "cl.ravenhill"
-version = "1.4.0"
+version = jaktVersion
 val projectVersion = version.toString()
 
 repositories {

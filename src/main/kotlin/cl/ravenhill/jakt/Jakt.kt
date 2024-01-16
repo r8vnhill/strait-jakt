@@ -8,8 +8,10 @@ package cl.ravenhill.jakt
 import cl.ravenhill.jakt.Jakt.shortCircuit
 import cl.ravenhill.jakt.Jakt.skipChecks
 import cl.ravenhill.jakt.constraints.Constraint
+import cl.ravenhill.jakt.constraints.strings.BeEmpty
 import cl.ravenhill.jakt.exceptions.CompositeException
 import cl.ravenhill.jakt.exceptions.ConstraintException
+import cl.ravenhill.jakt.exceptions.StringConstraintException
 
 /**
  * Provides a mechanism for enforcing contracts and constraints on data.
@@ -88,16 +90,69 @@ object Jakt {
         val failures: List<Throwable> get() = _results.filter { it.isFailure }.map { it.exceptionOrNull()!! }
 
         /**
-         * Defines a clause of a contract.
+         * Defines a clause of a contract for string validation.
          *
-         * @receiver The message key for the clause.
-         * @param predicate A lambda expression that defines the predicate for the clause.
+         * This inline operator function simplifies the creation of a validation clause for a string value. It is
+         * designed to be used within a DSL context, providing a declarative approach to define validation rules for
+         * strings. The function creates a [StringScope] instance, allowing the caller to specify validation logic in a
+         * concise and readable manner.
          *
-         * @return A [StringScope] instance that can be used to define a [Constraint] for the clause.
+         * ## Usage:
+         * The function is typically utilized to establish validation rules within a custom DSL. It allows for
+         * defining various constraints and rules that a string should comply with.
+         *
+         * ### Example: Setting up a simple validation rule
+         * ```
+         * "Username must not be empty" {
+         *     username mustNot BeEmpty
+         * }
+         * ```
+         *
+         * In this example, a validation rule is defined for the username. The rule specifies that the username must
+         * not be empty. If the validation fails, a [ConstraintException] is thrown. The actual kind of exception
+         * thrown is determined by the [Constraint] used in the validation rule. For example, if the validation rule
+         * uses the [BeEmpty] constraint on a string, a [StringConstraintException] is thrown.
+         *
+         * @receiver The message key or label for the validation clause.
+         * @param predicate A lambda expression with a receiver of type [StringScope], where the validation logic is
+         *   defined.
+         * @return A [StringScope] instance, providing the context and functionalities to define constraints and
+         *   validation logic.
          */
         inline operator fun String.invoke(predicate: StringScope.() -> Unit) = StringScope(this).apply { predicate() }
 
-        @ExperimentalJakt
+        /**
+         * Defines a clause of a contract with a custom exception generator for string validation.
+         *
+         * This variant of the inline operator function not only creates a contract clause for string validation but
+         * also allows specifying a custom exception to be thrown when validation fails. It combines Kotlin's DSL
+         * features with exception handling, enabling a more tailored approach to validation logic.
+         *
+         * ## Usage:
+         * Ideal for use cases where custom exception handling is necessary along with validation rules. Each rule can
+         * specify its own logic and the type of exception to be thrown upon failure.
+         *
+         * ### Example: Defining a validation rule with a custom exception
+         * ```
+         * class InvalidUsernameException(message: String) : ConstraintException({ message })
+         *
+         * constraints {
+         *     "Username must not be empty"(::InvalidUsernameException) {
+         *         username mustNot BeEmpty
+         *     }
+         * }
+         * ```
+         *
+         * In this example, the contract specifies that the username must not be empty. If the validation fails,
+         * an `InvalidUsernameException` is thrown.
+         *
+         * @param exceptionGenerator A lambda function that takes a [String] message and returns a
+         *   [ConstraintException]. This function is invoked to generate a custom exception when the validation rule is
+         *   violated.
+         * @param predicate A lambda with receiver [StringScope]. This is where the validation logic for the string is
+         *   defined. The receiver [StringScope] provides the context and utilities for string validation.
+         * @return A [StringScope] instance that can be used to define a [Constraint] for the clause.
+         */
         inline operator fun String.invoke(
             noinline exceptionGenerator: (String) -> ConstraintException,
             predicate: StringScope.() -> Unit,
@@ -110,6 +165,9 @@ object Jakt {
          * A scope for defining a [Constraint] for a contract clause.
          *
          * @property message The message key associated with the clause.
+         * @property outerScope The outer scope of the clause.
+         * @property exceptionGenerator A lambda function that takes a [String] message and returns a
+         *   [ConstraintException].
          */
         inner class StringScope(val message: String) {
             val outerScope = this@Scope

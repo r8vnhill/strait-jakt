@@ -25,9 +25,5 @@ package cl.ravenhill.jakt.exceptions
  * @param lazyMessage A lambda responsible for generating the error message when the exception is thrown.
  *
  * @constructor Initializes a new `CollectionConstraintException` using the specified `lazyMessage`.
- *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.0.0
- * @version 1.0.0
  */
 open class CollectionConstraintException(lazyMessage: () -> String) : ConstraintException(lazyMessage)
