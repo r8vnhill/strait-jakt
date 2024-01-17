@@ -42,10 +42,10 @@ package cl.ravenhill.jakt.exceptions
  */
 class CompositeException(val throwables: List<Throwable>) : Exception(
     if (throwables.size == 1)
-        "An exception occurred -- ${throwables[0].message}"
+        "An exception occurred -- [${throwables[0]::class.simpleName}] ${throwables[0].message}"
     else
         "Multiple exceptions occurred -- " +
-              throwables.joinToString(",\n") { "{ ${it.message} }" }
+              throwables.joinToString(",\n") { "{ [${it::class.simpleName}] ${it.message} }" }
 ) {
     init {
         require(throwables.isNotEmpty()) { "The list of throwables cannot be empty" }
