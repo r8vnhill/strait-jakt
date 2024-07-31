@@ -1,7 +1,5 @@
 package cl.ravenhill.jakt.constraints
 
-import java.time.LocalDate
-
 
 /**
  * Defines a contract for implementing constraints that check if a given value is negative.
@@ -28,7 +26,7 @@ import java.time.LocalDate
  *         DateConstraintException { description }
  * }
  * ```
- * In this example, `DateBeforeConstraint` checks if a [LocalDate] is before a specified "zero" date. For instance, if
+ * In this example, `DateBeforeConstraint` checks if a `LocalDate` is before a specified "zero" date. For instance, if
  * zero is set to January 1, 2020, then any date before January 1, 2020, would be considered "negative" (i.e., in the
  * past relative to this reference date).
  *
