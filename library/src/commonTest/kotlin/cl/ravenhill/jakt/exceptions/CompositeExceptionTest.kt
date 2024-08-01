@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.exceptions
 
 import io.kotest.assertions.throwables.shouldThrowWithMessage
@@ -18,8 +23,12 @@ class CompositeExceptionTest : FreeSpec({
                 exception.message shouldBe
                         buildString {
                             append("Multiple exceptions occurred -- ")
-                            exception.throwables.forEach { throwable ->
-                                append("{ [Exception] ${throwable.message} },\n")
+                            exception.throwables.forEachIndexed { index, throwable ->
+                                if (index == exception.throwables.size - 1) {
+                                    append("{ [Exception] ${throwable.message} }")
+                                } else {
+                                    append("{ [Exception] ${throwable.message} },\n")
+                                }
                             }
                         }
                 exception.throwables shouldBe exceptions

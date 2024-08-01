@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints.doubles
 
 import cl.ravenhill.jakt.assertions.constraints.`test BePositive constraint`

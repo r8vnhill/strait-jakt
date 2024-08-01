@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt
 
 import cl.ravenhill.jakt.arbs.collectionHaveSize
@@ -24,7 +29,7 @@ import io.kotest.property.checkAll
 @OptIn(ExperimentalKotest::class, ExperimentalJakt::class)
 class JaktTest : FreeSpec({
 
-    "A [Jackt.Scope]" - {
+    "A [Jakt.Scope]" - {
         "should have a [StringScope] that" - {
             "can be created with a message" {
                 checkAll<String>(PropTestConfig(iterations = 100)) { message ->

@@ -1,7 +1,12 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints.doubles
 
-import cl.ravenhill.jakt.ExperimentalJakt
 import cl.ravenhill.jakt.constraints.BePositiveConstraint
+import cl.ravenhill.jakt.constraints.doubles.BePositive.zero
 
 /**
  * Represents a constraint to validate that a [Double] value is positive.
@@ -28,7 +33,6 @@ import cl.ravenhill.jakt.constraints.BePositiveConstraint
  *   to determine if a `Double` value is positive, i.e., any `Double` value must be greater than this to
  *   satisfy the constraint.
  */
-@ExperimentalJakt
 data object BePositive : DoubleConstraint, BePositiveConstraint<Double> {
     override val zero = 0.0
 }
