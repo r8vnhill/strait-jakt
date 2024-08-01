@@ -1,33 +1,41 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints
 
 
 /**
- * Defines a contract for implementing constraints that check if a given value is equal to a specified value.
+ * A constraint that checks if a value is equal to the expected value.
  *
- * This interface extends the [Constraint] interface and is specifically geared towards [Comparable] types.
- * It provides a means to validate that a value is exactly equal to a specified `value`. This type of constraint
- * is widely applicable in a range of scenarios, such as ensuring equality in comparisons, validating exact matches,
- * and checking for specific conditions in data validation processes.
+ * ## Usage:
+ * Ensure that a value meets the equality constraint.
  *
- * Implementations of this interface should specify the value to be matched and provide the logic to determine
- * if a given value exactly equals this specified value.
+ * ### Example 1: Equality Constraint Check
  *
- * ## Usage
- * ### Example: Implementing a custom `BeEqualToConstraint` for integers
  * ```kotlin
- * class IntEqualToConstraint(override val value: Int) : BeEqualToConstraint<Int>
+ * val constraint = object : BeEqualToConstraint<Int> {
+ *     override val expected: Int = 42
+ * }
+ * val isValid = constraint.validator(42)
+ * println(isValid) // Prints: true
  * ```
  *
- * @param T The type parameter which must be [Comparable].
- * @property expected The exact value that a value of type [T] is compared against for equality.
- * @property validator A lambda function that takes a value of type [T] and returns a [Boolean] indicating
- * whether the value is exactly equal to `value`.
+ * ### Example 2: Inequality Constraint Check
  *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.2.0
- * @version 1.2.0
+ * ```kotlin
+ * val constraint = object : BeEqualToConstraint<String> {
+ *     override val expected: String = "Hello"
+ * }
+ * val isValid = constraint.validator("World")
+ * println(isValid) // Prints: false
+ * ```
+ *
+ * @property expected The value that the actual value is expected to be equal to.
+ * @property validator The validation function that checks if the actual value is equal to the expected value.
  */
-interface BeEqualToConstraint<T> : Constraint<T> where T : Comparable<T> {
+interface BeEqualToConstraint<T> : Constraint<T> {
     val expected: T
     override val validator: (T) -> Boolean
         get() = { it == expected }

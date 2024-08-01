@@ -1,37 +1,69 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints.collections
 
 
 /**
- * Represents a constraint that checks if a collection of [Comparable] elements is monotonically decreasing.
+ * Represents a constraint that ensures a collection is monotonically decreasing. It checks if each element in the
+ * collection is greater than or equal to the subsequent element.
  *
- * This constraint validates that each element in a collection is greater than (or equal to, if not strict)
- * the next element. It's particularly useful for validating collections where the order of elements is expected
- * to be in a descending sequence, such as in sorted arrays or certain algorithmic outputs.
+ * ## Usage:
+ * Ensure that a collection is monotonically decreasing.
  *
- * The `strict` parameter determines whether the comparison between consecutive elements should be strictly
- * greater than (`strict = true`) or greater than or equal to (`strict = false`).
+ * ### Example 1: Successful Constraint Check (Non-Strict)
  *
- * ## Usage
- * ### Example: Validating a monotonically decreasing collection
  * ```kotlin
- * val isStrictlyDecreasing = BeMonotonicallyDecreasing<Int>(true)
- * val isValidStrict = isStrictlyDecreasing.validator(listOf(5, 4, 3, 2, 1)) // Returns `true`
- * val isInvalidStrict = isStrictlyDecreasing.validator(listOf(5, 4, 4, 3))   // Returns `false`
- *
- * val isNonStrictlyDecreasing = BeMonotonicallyDecreasing<Int>(false)
- * val isValidNonStrict = isNonStrictlyDecreasing.validator(listOf(5, 5, 4, 4, 3)) // Returns `true`
- * val isInvalidNonStrict = isNonStrictlyDecreasing.validator(listOf(5, 6, 5, 4))  // Returns `false`
+ * val result = listOf(5, 4, 4, 3).constrainedTo {
+ *     "'$it' Must be monotonically decreasing" { it must BeMonotonicallyDecreasing() }
+ * }
+ * println(result) // Prints: [5, 4, 4, 3]
  * ```
  *
- * @param T The type of elements in the collection, which must be [Comparable].
- * @param strict A boolean indicating whether the comparison is strict (true for strictly greater than,
- * false for greater than or equal to).
- * @property validator A lambda function that takes a [Collection] of [T] and returns a [Boolean] indicating
- * whether the collection is monotonically decreasing according to the specified strictness.
+ * ### Example 2: Successful Constraint Check (Strict)
  *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.2.0
- * @version 1.2.0
+ * ```kotlin
+ * val result = listOf(5, 4, 3, 2).constrainedTo {
+ *     "'$it' Must be strictly monotonically decreasing" { it must BeMonotonicallyDecreasing(strict = true) }
+ * }
+ * println(result) // Prints: [5, 4, 3, 2]
+ * ```
+ *
+ * ### Example 3: Failed Constraint Check
+ *
+ * ```kotlin
+ * try {
+ *     val result = listOf(5, 4, 4, 5).constrainedTo {
+ *         "'$it' Must be monotonically decreasing" { it must BeMonotonicallyDecreasing() }
+ *     }
+ * } catch (e: CompositeException) {
+ *     println(e) // Prints the composite exception containing the constraint failures
+ * }
+ * ```
+ *
+ * ### Example 4: Applying Constraints using `constraints { }`
+ *
+ * ```kotlin
+ * fun validateList(list: List<Int>) {
+ *     constraints {
+ *         "'$list' Must be monotonically decreasing" { list must BeMonotonicallyDecreasing() }
+ *     }
+ *     // Continue with function logic...
+ * }
+ *
+ * try {
+ *     validateList(listOf(5, 4, 4, 3)) // Success
+ *     validateList(listOf(5, 4, 5, 3)) // Throws CompositeException
+ * } catch (e: CompositeException) {
+ *     println(e) // Prints the composite exception containing the constraint failures
+ * }
+ * ```
+ *
+ * @property strict A flag indicating whether the comparison should be strict. If true, each element must be strictly
+ *   greater than the subsequent element.
+ * @property validator The validation function that checks if the collection is monotonically decreasing.
  */
 data class BeMonotonicallyDecreasing<T>(val strict: Boolean = false) : CollectionConstraint<T> where T : Comparable<T> {
     override val validator = { value: Collection<T> ->

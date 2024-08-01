@@ -1,25 +1,65 @@
 /*
- * Copyright (c) 2023, Ignacio Slater M.
+ * Copyright (c) 2024, Ignacio Slater M.
  * 2-Clause BSD License.
  */
-
 
 package cl.ravenhill.jakt.constraints.collections
 
 
 /**
- * Represents a constraint that ensures a specific element is present within a collection.
+ * Represents a constraint that ensures a collection contains a specific element.
  *
- * This class checks whether a given collection contains the specified `element`.
- * It serves as a concrete implementation of the [CollectionConstraint] interface for this specific check.
+ * ## Usage:
+ * Define constraints for collections to ensure they meet specified criteria.
  *
- * @param element The element that the collection should contain to satisfy this requirement.
- * @property validator A lambda function that verifies the presence of the specified `element` in the collection.
+ * ### Example 1: Successful Constraint Check
  *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 2.0.0
- * @version 2.0.0
+ * ```kotlin
+ * val result = listOf(1, 2, 3, 4).constrainedTo {
+ *     "'$it' Must contain the element 3" { it must HaveElement(3) }
+ * }
+ * println(result) // Prints: [1, 2, 3, 4]
+ * ```
+ *
+ * ### Example 2: Failed Constraint Check
+ *
+ * ```kotlin
+ * try {
+ *     val result = listOf(1, 2, 3, 4).constrainedTo {
+ *         "'$it' Must contain the element 5" { it must HaveElement(5) }
+ *     }
+ * } catch (e: CompositeException) {
+ *     println(e) // Prints the composite exception containing the constraint failures
+ * }
+ * ```
+ *
+ * ### Example 3: Using Object Expressions for Custom Constraints
+ *
+ * ```kotlin
+ * val customConstraint = object : CollectionConstraint<Int> {
+ *     override val validator = { value: Collection<Int> ->
+ *         value.contains(2)
+ *     }
+ * }
+ *
+ * val result = listOf(1, 2, 3, 4).constrainedTo {
+ *     "'$it' Must contain the element 2" { it must customConstraint }
+ * }
+ * println(result) // Prints: [1, 2, 3, 4]
+ *
+ * try {
+ *     val failedResult = listOf(1, 3, 4).constrainedTo {
+ *         "'$it' Must contain the element 2" { it must customConstraint }
+ *     }
+ * } catch (e: CompositeException) {
+ *     println(e) // Prints the composite exception containing the constraint failures
+ * }
+ * ```
+ *
+ * @param T The type of elements in the collection.
+ * @property element The element that must be present in the collection.
+ * @property validator The validation function that checks if the collection meets the constraint criteria.
  */
 data class HaveElement<T>(private val element: T) : CollectionConstraint<T> {
-  override val validator = { collection: Collection<T> -> element in collection }
+    override val validator = { collection: Collection<T> -> element in collection }
 }

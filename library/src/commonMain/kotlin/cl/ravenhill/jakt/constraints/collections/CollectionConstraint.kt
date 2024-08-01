@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Ignacio Slater M.
+ * Copyright (c) 2024, Ignacio Slater M.
  * 2-Clause BSD License.
  */
 
@@ -9,35 +9,61 @@ import cl.ravenhill.jakt.constraints.Constraint
 import cl.ravenhill.jakt.exceptions.CollectionConstraintException
 
 /**
- * Represents a constraint specifically tailored for collections.
+ * Represents a constraint applied to collections. It ensures that a collection meets specific criteria.
  *
- * This interface extends the general [Constraint] interface but specializes in handling collections of any type.
- * When the constraint for a collection is violated, it generates a [CollectionConstraintException]
- * with the provided description.
+ * ## Usage:
+ * Define constraints for collections to ensure they meet specified criteria.
  *
- * ## Usage
- * ### Example: Implementing a custom collection constraint to ensure non-emptiness
+ * ### Example 1: Implementing a Collection Constraint
+ *
  * ```kotlin
- * class NonEmptyCollectionConstraint : CollectionConstraint {
- *     override val validator: (Collection<*>) -> Boolean = { it.isNotEmpty() }
+ * data class BeMonotonicallyIncreasing<T>(
+ *     val strict: Boolean = false
+ * ) : CollectionConstraint<T> where T : Comparable<T> {
+ *     override val validator = { value: Collection<T> ->
+ *         value.zipWithNext().all { (a, b) ->
+ *             if (strict) a < b else a <= b
+ *         }
+ *     }
  * }
  * ```
  *
- * @see Constraint
- * @see CollectionConstraintException
+ * ### Example 2: Applying a Collection Constraint
  *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.0.0
- * @version 1.0.0
+ * ```kotlin
+ * val result = listOf(1, 2, 3, 4).constrainedTo {
+ *     "'$it' Must be monotonically increasing" { it must BeMonotonicallyIncreasing() }
+ * }
+ * println(result) // Prints: [1, 2, 3, 4]
+ * ```
+ *
+ * ### Example 3: Using Object Expressions for Custom Constraints
+ *
+ * ```kotlin
+ * val customConstraint = object : CollectionConstraint<Int> {
+ *     override val validator = { value: Collection<Int> ->
+ *         value.all { it > 0 }
+ *     }
+ * }
+ *
+ * val result = listOf(1, 2, 3, 4).constrainedTo {
+ *     "'$it' Must contain only positive numbers" { it must customConstraint }
+ * }
+ * println(result) // Prints: [1, 2, 3, 4]
+ *
+ * try {
+ *     val failedResult = listOf(-1, 2, 3, 4).constrainedTo {
+ *         "'$it' Must contain only positive numbers" { it must customConstraint }
+ *     }
+ * } catch (e: CollectionConstraintException) {
+ *     println(e) // Prints the collection constraint exception details
+ * }
+ * ```
+ *
+ * @param T The type of elements in the collection.
+ *
+ * @property validator The validation function that checks if the collection meets the constraint criteria.
  */
 interface CollectionConstraint<T> : Constraint<Collection<T>> {
-
-    /**
-     * Generates a constraint violation exception specific to collections.
-     *
-     * @param description A description of the constraint violation.
-     *
-     * @return A [CollectionConstraintException] with the provided description.
-     */
     override fun generateException(description: String) = CollectionConstraintException { description }
 }

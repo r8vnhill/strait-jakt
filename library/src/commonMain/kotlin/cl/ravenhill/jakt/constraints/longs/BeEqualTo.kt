@@ -1,4 +1,11 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints.longs
+
+import cl.ravenhill.jakt.constraints.BeEqualToConstraint
 
 /**
  * Represents a constraint ensuring a provided long value matches a specific expected value.
@@ -14,11 +21,5 @@ package cl.ravenhill.jakt.constraints.longs
  * ```
  *
  * @property expected The expected long value against which the given value will be compared.
- *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.0.0
- * @version 1.0.0
  */
-data class BeEqualTo(val expected: Long) : LongConstraint {
-    override val validator = { value: Long -> value == expected }
-}
+data class BeEqualTo(override val expected: Long) : LongConstraint, BeEqualToConstraint<Long>
