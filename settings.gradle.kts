@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 pluginManagement {
     includeBuild("convention-plugins")
     repositories {
@@ -14,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "multiplatform-library-template"
+rootProject.name = "strait-jakt"
 include(":library")
