@@ -1,5 +1,7 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -29,6 +31,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                implementation(kotlin("reflect"))
                 implementation(libs.kotest.assertions.core)
                 implementation(libs.kotest.framework.engine)
                 implementation(libs.kotest.framework.datatest)
@@ -39,6 +42,7 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
+                implementation(kotlin("reflect"))
                 implementation(libs.kotest.runner.junit5)
             }
         }
