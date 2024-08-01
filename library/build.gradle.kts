@@ -5,23 +5,15 @@
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-//    alias(libs.plugins.androidLibrary)
     id("module.publication")
 }
 
 kotlin {
     jvm()
-//    androidTarget {
-//        publishLibraryVariants("release")
-//        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-//        compilerOptions {
-//            jvmTarget.set(JvmTarget.JVM_1_8)
-//        }
-//    }
     iosX64()
     iosArm64()
     iosSimulatorArm64()
-    linuxX64()
+    mingwX64("windows")
 
     sourceSets {
         val commonMain by getting {
@@ -48,11 +40,3 @@ kotlin {
         }
     }
 }
-
-//android {
-//    namespace = "cl.ravenhill.jakt"
-//    compileSdk = libs.versions.android.compileSdk.get().toInt()
-//    defaultConfig {
-//        minSdk = libs.versions.android.minSdk.get().toInt()
-//    }
-//}
