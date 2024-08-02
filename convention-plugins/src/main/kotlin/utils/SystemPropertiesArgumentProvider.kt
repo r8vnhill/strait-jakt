@@ -23,8 +23,9 @@ class SystemPropertiesArgumentProvider(
      * Provides the input properties as a map, where the value is a boolean indicating whether the property is null.
      * This is used for incremental build analysis to track the presence of properties.
      */
+    @Suppress("unused")
     @get:Input
-    private val inputs: Provider<Map<String, Boolean>>
+    val inputs: Provider<Map<String, Boolean>>
         get() = properties.map { props -> props.mapValues { (_, v) -> v == null } }
 
     /**

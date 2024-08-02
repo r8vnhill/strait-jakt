@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.assertions
 
 import cl.ravenhill.jakt.exceptions.ConstraintException
@@ -14,7 +19,7 @@ import io.kotest.property.checkAll
  *                         with that string as its message.
  * @throws AssertionError if the exception message does not match the input string.
  */
-suspend inline fun `check exception message consistency`(
+suspend inline fun checkExceptionMessageConsistency(
     crossinline exceptionBuilder: (String) -> ConstraintException
 ) {
     checkAll(Arb.string()) { message ->
@@ -22,4 +27,3 @@ suspend inline fun `check exception message consistency`(
         exception.message shouldBe message
     }
 }
-

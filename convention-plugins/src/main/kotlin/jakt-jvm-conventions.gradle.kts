@@ -15,6 +15,11 @@ plugins {
     id("kotlin-conventions")
 }
 
+// Retrieve the version catalog named "libs".
+// A version catalog is a central place to define versions and dependencies that can be shared across different parts of
+// the build.
+private val libs: VersionCatalog = versionCatalogs.named("libs")
+
 kotlin {
     // Configuring the JVM target with Java interoperability
     jvm {
@@ -26,17 +31,16 @@ kotlin {
         // Getting the JVM test source set and adding dependencies
         getByName("jvmTest") {
             dependencies {
+                // Adding the Kotlin reflect library as an implementation dependency
+                implementation(kotlin("reflect"))
                 // Adding the Kotest JUnit 5 runner as an implementation dependency
-                implementation(project(":kotest-runner:kotest-runner-junit5"))
+                implementation(
+                    libs.findLibrary("kotest.runner.junit5")
+                        .getOrElse { error("Missing Kotest JUnit 5 runner dependency") })
             }
         }
     }
 }
-
-// Retrieve the version catalog named "libs".
-// A version catalog is a central place to define versions and dependencies that can be shared across different parts of
-// the build.
-private val libs: VersionCatalog = versionCatalogs.named("libs")
 
 // Extension function to find and provide a JavaLanguageVersion from the version catalog.
 // The function takes a version name as a parameter and returns a provider for the JavaLanguageVersion.

@@ -6,6 +6,8 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     id("module.publication")
+    id("jakt-jvm-conventions")
+    id("jakt-js-conventions")
 }
 
 kotlin {
@@ -14,7 +16,6 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()
     mingwX64("windows")
-    js()
 
     sourceSets {
         val commonMain by getting {
@@ -36,7 +37,6 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("reflect"))
-                implementation(libs.kotest.runner.junit5)
             }
         }
     }

@@ -122,7 +122,7 @@ private suspend fun <T, C> FreeSpecContainerScope.`test property assignment`(
  * @param constraint A lambda function that takes a minimum inclusive value of type [T] and returns a
  *   [BeAtLeastConstraint].
  */
-fun <T> `test BeAtLeast constraint`(
+fun <T> testBeAtLeastConstraint(
     gen: Arb<T>,
     constraint: (minInclusive: T) -> BeAtLeastConstraint<T>
 ) where T : Comparable<T> = freeSpec {
@@ -163,7 +163,7 @@ fun <T> `test BeAtLeast constraint`(
  * @param constraint A lambda function that takes a maximum inclusive value of type [T] and returns a
  * [BeAtMostConstraint].
  */
-fun <T> `test BeAtMost constraint`(
+fun <T> testBeAtMostConstraint(
     gen: Arb<T>,
     constraint: (maxInclusive: T) -> BeAtMostConstraint<T>
 ) where T : Comparable<T> = freeSpec {

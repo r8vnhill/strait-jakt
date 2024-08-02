@@ -2,18 +2,12 @@ package cl.ravenhill.jakt.assertions.constraints
 
 import cl.ravenhill.jakt.arbs.datatypes.orderedPair
 import cl.ravenhill.jakt.arbs.datatypes.orderedTriple
-import cl.ravenhill.jakt.constraints.BeAtLeastConstraint
-import cl.ravenhill.jakt.constraints.BeAtMostConstraint
 import cl.ravenhill.jakt.constraints.BeInRangeConstraint
-import cl.ravenhill.jakt.constraints.BeNegativeConstraint
-import cl.ravenhill.jakt.constraints.Constraint
 import io.kotest.core.spec.style.freeSpec
-import io.kotest.core.spec.style.scopes.FreeSpecContainerScope
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.kotest.property.Arb
-import io.kotest.property.Gen
 import io.kotest.property.checkAll
 
 /**
@@ -44,7 +38,7 @@ import io.kotest.property.checkAll
  *   [BeInRangeConstraint].
  * @param T The type parameter which must be [Comparable].
  */
-fun <T> `validate BeInRangeConstraint`(
+fun <T> validateBeInRangeConstraint(
     gen: Arb<T>,
     constraint: (range: ClosedRange<T>) -> BeInRangeConstraint<T>
 ) where T : Comparable<T> = freeSpec {

@@ -1,15 +1,17 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.assertions.constraints
 
 import cl.ravenhill.jakt.constraints.BeNegativeConstraint
 import cl.ravenhill.jakt.constraints.BePositiveConstraint
-import cl.ravenhill.jakt.constraints.ints.BePositive
 import io.kotest.core.TestConfiguration
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.property.Arb
-import io.kotest.property.arbitrary.nonPositiveInt
-import io.kotest.property.arbitrary.positiveInt
 import io.kotest.property.checkAll
 
 /**
@@ -39,7 +41,7 @@ import io.kotest.property.checkAll
  * @param falseArb An [Arb] generator producing values expected to be non-negative.
  * @param constraint A lambda function that creates an instance of [BeNegativeConstraint].
  */
-fun <T> `test BeNegative constraint`(
+fun <T> testBeNegativeConstraint(
     trueArb: Arb<T>,
     falseArb: Arb<T>,
     constraint: () -> BeNegativeConstraint<T>,
@@ -71,7 +73,7 @@ fun <T> `test BeNegative constraint`(
     }
 }
 
-fun <T> `test BePositive constraint`(
+fun <T> testBePositiveConstraint(
     trueArb: Arb<T>,
     falseArb: Arb<T>,
     constraint: () -> BePositiveConstraint<T>,
