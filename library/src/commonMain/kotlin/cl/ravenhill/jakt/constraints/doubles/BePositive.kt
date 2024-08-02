@@ -9,29 +9,40 @@ import cl.ravenhill.jakt.constraints.BePositiveConstraint
 import cl.ravenhill.jakt.constraints.doubles.BePositive.zero
 
 /**
- * Represents a constraint to validate that a [Double] value is positive.
+ * Represents a constraint that ensures a `Double` value is positive, i.e., greater than zero.
  *
- * Marked with the `@ExperimentalJakt` annotation, indicating that `BePositive` is part of the experimental API
- * and may be subject to changes in future releases. It implements both [DoubleConstraint] and
- * [BePositiveConstraint]<Double>, specifically designed for validating `Double` values to ensure they are
- * greater than zero.
- *
- * As a data object, `BePositive` is a singleton, providing a shared instance that can be used across different
- * parts of an application where positive `Double` values need to be validated.
+ * This class implements both `DoubleConstraint` and `BePositiveConstraint<Double>`.
  *
  * ## Usage:
- * This constraint is particularly useful in scenarios where only positive `Double` values are valid, such as
- * in financial calculations, measurements, or other contexts where negative numbers are not permissible.
+ * Define constraints for `Double` values to ensure they are positive.
  *
- * ### Example: Validating if a number is positive
- * ```
- * val isPositive = BePositive.validator(5.0)  // Returns `true`
- * val isNotPositive = BePositive.validator(-5.0) // Returns `false`
+ * ### Example 1: Using BePositive Constraint
+ *
+ * ```kotlin
+ * val result = 5.5.constrainedTo {
+ *     "'$it' Must be positive" { it must BePositive }
+ * }
+ * println(result) // Prints: 5.5
  * ```
  *
- * @property zero The baseline value (0.0) used for comparison in the validation. It serves as the threshold
- *   to determine if a `Double` value is positive, i.e., any `Double` value must be greater than this to
- *   satisfy the constraint.
+ * ### Example 2: Using a Constraints Block for Custom Validation
+ *
+ * ```kotlin
+ * fun validatePositive(value: Double) {
+ *     constraints {
+ *         "'$value' Must be positive" { value must BePositive }
+ *     }
+ * }
+ *
+ * try {
+ *     validatePositive(10.0) // Success
+ *     validatePositive(-5.0) // Throws CompositeException
+ * } catch (e: CompositeException) {
+ *     println(e) // Prints the constraint exception details
+ * }
+ * ```
+ *
+ * @property zero The value that the actual value must be greater than to be considered positive.
  */
 data object BePositive : DoubleConstraint, BePositiveConstraint<Double> {
     override val zero = 0.0

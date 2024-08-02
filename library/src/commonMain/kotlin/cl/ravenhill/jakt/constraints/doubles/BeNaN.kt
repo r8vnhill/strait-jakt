@@ -1,31 +1,49 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints.doubles
 
-import cl.ravenhill.jakt.ExperimentalJakt
+import cl.ravenhill.jakt.constraints.doubles.BeNaN.validator
 
 /**
- * Represents a constraint to validate that a [Double] value is NaN (Not-a-Number).
+ * Represents a constraint that ensures a `Double` value is NaN (Not-a-Number).
  *
- * Annotated with `@ExperimentalJakt`, this indicates that `BeNaN` is an experimental feature within the library and
- * may be subject to changes in future versions. `BeNaN` implements the [DoubleConstraint] interface and is
- * specifically designed to check if a `Double` value is NaN.
- *
- * The implementation leverages the [isNaN] extension function on `Double` to perform the validation.
+ * This class implements the `DoubleConstraint` interface.
  *
  * ## Usage:
- * The `BeNaN` constraint is particularly useful in numerical computations and scenarios where NaN values can occur,
- * such as in calculations that result in undefined or unrepresentable values. This constraint provides a
- * straightforward way to detect these cases.
+ * Define constraints for `Double` values to ensure they are NaN.
  *
- * ### Example: Validating if a number is NaN
- * ```
- * val isNan = BeNaN.validator(Double.NaN)  // Returns `true`
- * val isNotNan = BeNaN.validator(5.0)      // Returns `false`
+ * ### Example 1: Using BeNaN Constraint
+ *
+ * ```kotlin
+ * val result = Double.NaN.constrainedTo {
+ *     "'$it' Must be NaN" { it must BeNaN }
+ * }
+ * println(result) // Prints: NaN
  * ```
  *
- * @property validator A lambda function that takes a `Double` value and returns `true` if it is NaN,
- *   or `false` otherwise. This property offers an efficient way to validate against the NaN condition.
+ * ### Example 2: Using a Constraints Block for Custom Validation
+ *
+ * ```kotlin
+ * fun validateNaN(value: Double) {
+ *     constraints {
+ *         "'$value' Must be NaN" { value must BeNaN }
+ *     }
+ * }
+ *
+ * try {
+ *     validateNaN(Double.NaN) // Success
+ *     validateNaN(10.0) // Throws CompositeException
+ * } catch (e: CompositeException) {
+ *     println(e) // Prints the constraint exception details
+ * }
+ * ```
+ *
+ * @property validator The validation function that checks if the value is NaN.
  */
-@ExperimentalJakt
 data object BeNaN : DoubleConstraint {
-    override val validator: (Double) -> Boolean = Double::isNaN
+    override val validator = Double::isNaN
 }
+

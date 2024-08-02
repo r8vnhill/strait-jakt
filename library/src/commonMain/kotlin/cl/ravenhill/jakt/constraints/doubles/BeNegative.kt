@@ -1,27 +1,47 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints.doubles
 
 import cl.ravenhill.jakt.constraints.BeNegativeConstraint
 
 /**
- * Represents a constraint to validate that a [Double] value is negative.
+ * Represents a constraint that ensures a `Double` value is negative, i.e., less than zero.
  *
- * `BeNegative` is an object that implements both [DoubleConstraint] and [BeNegativeConstraint]`<Double>`, tailored for
- * validating `Double` values. It asserts that a given `Double` value is less than zero. Being a singleton data object,
- * it maintains a single, shared instance that can be reused across various validations where a negative `Double` value
- * is expected.
+ * This class implements both `DoubleConstraint` and `BeNegativeConstraint<Double>`.
  *
  * ## Usage:
- * `BeNegative` is utilized in scenarios where it's essential to confirm that a `Double` value is negative, such as in
- * financial calculations, physical measurements, or other contexts where negative numbers hold specific significance.
+ * Define constraints for `Double` values to ensure they are negative.
  *
- * ### Example: Validating if a number is negative
- * ```
- * val isNegative = BeNegative.validator(-5.0)  // Returns `true`
- * val isNotNegative = BeNegative.validator(5.0) // Returns `false`
+ * ### Example 1: Using BeNegative Constraint
+ *
+ * ```kotlin
+ * val result = (-5.5).constrainedTo {
+ *     "'$it' Must be negative" { it must BeNegative }
+ * }
+ * println(result) // Prints: -5.5
  * ```
  *
- * @property zero The baseline value (0.0) used for comparison in the validation, indicating
- *   that any `Double` value must be less than this to satisfy the constraint.
+ * ### Example 2: Using a Constraints Block for Custom Validation
+ *
+ * ```kotlin
+ * fun validateNegative(value: Double) {
+ *     constraints {
+ *         "'$value' Must be negative" { value must BeNegative }
+ *     }
+ * }
+ *
+ * try {
+ *     validateNegative(-10.0) // Success
+ *     validateNegative(5.0) // Throws CompositeException
+ * } catch (e: CompositeException) {
+ *     println(e) // Prints the constraint exception details
+ * }
+ * ```
+ *
+ * @property zero The value that the actual value must be less than to be considered negative.
  */
 data object BeNegative : DoubleConstraint, BeNegativeConstraint<Double> {
     override val zero: Double = 0.0
