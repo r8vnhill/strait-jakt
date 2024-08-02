@@ -6,8 +6,11 @@
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.`maven-publish`
+import kotlin.jvm.optionals.getOrElse
 
-val jaktVersion = extra["jakt.version"] as String
+val versionCatalog: VersionCatalog = versionCatalogs.named("libs")
+val jaktVersion: String =
+    versionCatalog.findVersion("jakt").getOrElse { error("Version for 'jakt' not found") }.requiredVersion
 
 plugins {
     `maven-publish`

@@ -1,10 +1,16 @@
+import kotlin.jvm.optionals.getOrElse
+
 plugins {
     id("io.github.gradle-nexus.publish-plugin")
 }
 
+val versionCatalog: VersionCatalog = versionCatalogs.named("libs")
+val jaktVersion: VersionConstraint =
+    versionCatalog.findVersion("jakt").getOrElse { error("Version for 'jakt' not found") }
+
 allprojects {
     group = "cll.ravenhill.jakt"
-    version = extra["jakt.version"] as String
+    version = jaktVersion
 }
 
 nexusPublishing {
