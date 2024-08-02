@@ -6,7 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [2.0.0] - TBD
+
+## Added
+- **New constrainedTo() function:** Introduced a new function to apply constraints to the result of an operation, returning the result if it satisfies the constraints or throwing an exception otherwise.
+- **`BeNull` Constraint:** Added a new constraint to validate if a value is `null`.
+
+## Changed
 - **Migration to KMP:** The library has been migrated to Kotlin Multiplatform (KMP) to support cross-platform development.
+- **Updated Kotlin Version:** Upgraded the Kotlin version to `2.0.0` to align with the latest language features and improvements.
 
 ## [1.5.0] - 2024-01-17
 
