@@ -42,7 +42,7 @@ kotlin {
 
     // Apply a hierarchy template for organizing source sets and targets.
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    applyHierarchyTemplate(KotlinHierarchyTemplate.default) {
+    applyDefaultHierarchyTemplate {
         // Define a group named "common" for common configurations.
         group("common") {
             // Define a subgroup named "native" for native targets.

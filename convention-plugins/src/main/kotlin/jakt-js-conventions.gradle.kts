@@ -3,7 +3,6 @@
  * 2-Clause BSD License.
  */
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyTemplate
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
@@ -34,7 +33,7 @@ kotlin {
 
     // Apply a hierarchy template for organizing source sets and targets.
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    applyHierarchyTemplate(KotlinHierarchyTemplate.default) {
+    applyDefaultHierarchyTemplate {
         // Define a group named "common" for common configurations.
         group("common") {
             // Define a subgroup named "jsHosted" for JavaScript-hosted targets.
