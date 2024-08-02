@@ -1,30 +1,55 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints
 
 
 /**
- * Defines a contract for implementing constraints that check if a given value is at least a specified minimum.
+ * Represents a constraint that ensures a value is at least a specified minimum value.
  *
- * This interface extends the [Constraint] interface with a focus on constraints for [Comparable] types,
- * specifically for validating that a value is greater than or equal to a specified minimum value (`minInclusive`).
- * It can be used in various contexts where numerical or comparable values must meet a minimum threshold,
- * such as lower bounds in ranges, minimum requirements in scoring systems, or boundary conditions in algorithms.
+ * ## Usage:
+ * Define constraints for values to ensure they are at least a specified minimum value.
  *
- * Implementations of this interface should define the minimum inclusive value and provide the logic to validate
- * if a given value meets this minimum requirement.
+ * ### Example 1: Implementing a BeAtLeastConstraint
  *
- * ## Usage
- * ### Example: Implementing a custom `BeAtLeastConstraint` for integers
  * ```kotlin
- * class IntAtLeastConstraint(override val minInclusive: Int) : BeAtLeastConstraint<Int>
+ * data class AtLeastFive : BeAtLeastConstraint<Int> {
+ *     override val minInclusive: Int = 5
+ * }
+ *
+ * val result = 6.constrainedTo {
+ *     "'$it' Must be at least 5" { it must AtLeastFive() }
+ * }
+ * println(result) // Prints: 6
  * ```
  *
- * @param T The type of value this constraint applies to, which must be [Comparable].
- * @property minInclusive The minimum inclusive value that a value of type [T] should be equal to or exceed.
- * @property validator A lambda function that takes a value of type [T] and returns a [Boolean] indicating
- * whether the value is greater than or equal to `minInclusive`.
+ * ### Example 2: Using a Constraints Block for Custom Validation
+ *
+ * ```kotlin
+ * fun validateMinimumValue(value: Int) {
+ *     constraints {
+ *         "'$value' Must be at least 10" { value must object : BeAtLeastConstraint<Int> {
+ *             override val minInclusive: Int = 10
+ *         }}
+ *     }
+ * }
+ *
+ * try {
+ *     validateMinimumValue(12) // Success
+ *     validateMinimumValue(8) // Throws ConstraintException
+ * } catch (e: ConstraintException) {
+ *     println(e) // Prints the constraint exception details
+ * }
+ * ```
+ *
+ * @param T The type of value to which the constraint is applied. Must be comparable.
+ * @property minInclusive The minimum value (inclusive) that the actual value must be greater than or equal to.
+ * @property validator The validation function that checks if the value meets the constraint criteria.
  */
 interface BeAtLeastConstraint<T> : Constraint<T> where T : Comparable<T> {
     val minInclusive: T
     override val validator: (T) -> Boolean
-        get() = { value: T -> value >= minInclusive }
+        get() = { it >= minInclusive }
 }

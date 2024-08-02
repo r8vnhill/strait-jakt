@@ -1,34 +1,56 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints
 
 
+
 /**
- * Defines a contract for implementing constraints that check if a given value is within a specified range.
+ * Represents a constraint that ensures a value is within a specified range.
  *
- * This interface extends the [Constraint] interface, focusing on constraints for [Comparable] types.
- * It provides a means to validate that a value falls within a specified closed range (`range`). This type of
- * constraint is widely applicable in various scenarios, such as validating numerical ranges, ensuring values
- * fall within acceptable limits, or checking ranges in data filtering processes.
+ * ## Usage:
+ * Define constraints for values to ensure they fall within a specified range.
  *
- * Implementations of this interface should specify the range to be checked and provide the logic to determine
- * if a given value falls within this range.
+ * ### Example 1: Implementing a BeInRangeConstraint
  *
- * ## Usage
- * ### Example: Implementing a custom `BeInRangeConstraint` for integers
  * ```kotlin
- * class IntInRangeConstraint(override val range: ClosedRange<Int>) : BeInRangeConstraint<Int>
+ * data class InRangeOneToTen : BeInRangeConstraint<Int> {
+ *     override val range: ClosedRange<Int> = 1..10
+ * }
+ *
+ * val result = 5.constrainedTo {
+ *     "'$it' Must be within the range 1 to 10" { it must InRangeOneToTen() }
+ * }
+ * println(result) // Prints: 5
  * ```
  *
- * @param T The type parameter which must be [Comparable].
- * @property range The closed range of type [T] that the value should fall within.
- * @property validator A lambda function that takes a value of type [T] and returns a [Boolean] indicating
- * whether the value falls within the specified `range`.
+ * ### Example 2: Using a Constraints Block for Custom Validation
  *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.2.0
- * @version 1.2.0
+ * ```kotlin
+ * fun validateRange(value: Int) {
+ *     constraints {
+ *         "'$value' Must be within the range 5 to 15" { value must object : BeInRangeConstraint<Int> {
+ *             override val range: ClosedRange<Int> = 5..15
+ *         }}
+ *     }
+ * }
+ *
+ * try {
+ *     validateRange(10) // Success
+ *     validateRange(3) // Throws ConstraintException
+ * } catch (e: ConstraintException) {
+ *     println(e) // Prints the constraint exception details
+ * }
+ * ```
+ *
+ * @param T The type of value to which the constraint is applied. Must be comparable.
+ * @property range The range that the actual value must fall within.
+ * @property validator The validation function that checks if the value meets the constraint criteria.
  */
 interface BeInRangeConstraint<T> : Constraint<T> where T : Comparable<T> {
     val range: ClosedRange<T>
     override val validator: (T) -> Boolean
-        get() = { it in range }
+        get() = range::contains
 }

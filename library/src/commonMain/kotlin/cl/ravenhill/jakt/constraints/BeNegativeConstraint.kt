@@ -1,39 +1,52 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints
 
 
 /**
- * Defines a contract for implementing constraints that check if a given value is negative.
+ * Represents a constraint that ensures a value is negative, i.e., less than a specified zero value.
  *
- * This interface extends the [Constraint] interface, targeting [Comparable] types. It provides the functionality
- * to validate that a value is less than a specified 'zero' value, typically representing the numeric zero in various
- * data types. This constraint is useful in scenarios where you need to ensure that values are negative, such as in
- * financial calculations, physical measurements, or other contexts where negative values have specific implications.
+ * ## Usage:
+ * Define constraints for values to ensure they are negative.
  *
- * Implementations of this interface should specify the 'zero' value, which acts as the threshold to determine
- * negativity.
+ * ### Example 1: Implementing a BeNegativeConstraint
  *
- * ## Usage
- * ### Example: Implementing a custom `BeNegativeConstraint` for dates
  * ```kotlin
- * class DateConstraintException(
- *     description: () -> String
- * ) : ConstraintException(description)
+ * data object BeNegativeInt : BeNegativeConstraint<Int> {
+ *     override val zero: Int = 0
+ * }
  *
- * data class BeBefore(
- *     override val zero: LocalDate
- * ) : BeNegativeConstraint<LocalDate> {
- *     override fun generateException(description: String) =
- *         DateConstraintException { description }
+ * val result = (-5).constrainedTo {
+ *     "'$it' Must be negative" { it must BeNegativeInt }
+ * }
+ * println(result) // Prints: -5
+ * ```
+ *
+ * ### Example 2: Using a Constraints Block for Custom Validation
+ *
+ * ```kotlin
+ * fun validateNegative(value: Int) {
+ *     constraints {
+ *         "'$value' Must be negative" { value must object : BeNegativeConstraint<Int> {
+ *             override val zero: Int = 0
+ *         }}
+ *     }
+ * }
+ *
+ * try {
+ *     validateNegative(-10) // Success
+ *     validateNegative(5) // Throws ConstraintException
+ * } catch (e: ConstraintException) {
+ *     println(e) // Prints the constraint exception details
  * }
  * ```
- * In this example, `DateBeforeConstraint` checks if a `LocalDate` is before a specified "zero" date. For instance, if
- * zero is set to January 1, 2020, then any date before January 1, 2020, would be considered "negative" (i.e., in the
- * past relative to this reference date).
  *
- * @param T The type parameter which must be [Comparable].
- * @property zero The value representing 'zero' for the type [T]. Values less than this are considered negative.
- * @property validator A lambda function that takes a value of type [T] and returns a [Boolean] indicating
- * whether the value is negative (less than `zero`).
+ * @param T The type of value to which the constraint is applied. Must be comparable.
+ * @property zero The value that the actual value must be less than to be considered negative.
+ * @property validator The validation function that checks if the value meets the constraint criteria.
  */
 interface BeNegativeConstraint<T> : Constraint<T> where T : Comparable<T> {
     val zero: T

@@ -1,29 +1,47 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints.doubles
 
 import cl.ravenhill.jakt.constraints.BeAtLeastConstraint
 
 
 /**
- * Represents a constraint that checks if a given double value is at least a specified minimum value.
+ * Represents a constraint that ensures a `Double` value is at least a specified minimum value.
  *
- * This constraint is used to validate that a double value is greater than or equal to the specified minimum
- * value (`minInclusive`). It is particularly useful in scenarios where numerical values must meet a certain
- * threshold, such as minimum requirements, lower bounds in ranges, or in validating measurements and scores.
+ * This class implements both `DoubleConstraint` and `BeAtLeastConstraint<Double>`.
  *
- * ## Usage
- * ### Example: Validating a value against a minimum threshold
+ * ## Usage:
+ * Define constraints for `Double` values to ensure they are at least a specified minimum value.
+ *
+ * ### Example 1: Using BeAtLeast Constraint
+ *
  * ```kotlin
- * val minConstraint = BeAtLeast(10.0)
- * val isValid = minConstraint.validator(10.5) // Returns `true` as 10.5 is greater than 10.0
- * val isInvalid = minConstraint.validator(9.99) // Returns `false` as 9.99 is less than 10.0
+ * val result = 5.5.constrainedTo {
+ *     "'$it' Must be at least 3.0" { it must BeAtLeast(3.0) }
+ * }
+ * println(result) // Prints: 5.5
  * ```
  *
- * @param minInclusive The minimum inclusive value that the double value should be equal to or exceed.
- * @property validator A lambda function that takes a [Double] and returns a [Boolean] indicating whether the
- * given value is greater than or equal to `minInclusive`.
+ * ### Example 2: Using a Constraints Block for Custom Validation
  *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.2.0
- * @version 1.2.0
+ * ```kotlin
+ * fun validateMinimum(value: Double) {
+ *     constraints {
+ *         "'$value' Must be at least 10.0" { value must BeAtLeast(10.0) }
+ *     }
+ * }
+ *
+ * try {
+ *     validateMinimum(15.0) // Success
+ *     validateMinimum(5.0) // Throws CompositeException
+ * } catch (e: CompositeException) {
+ *     println(e) // Prints the constraint exception details
+ * }
+ * ```
+ *
+ * @param minInclusive The minimum value (inclusive) that the `Double` value must be greater than or equal to.
  */
 data class BeAtLeast(override val minInclusive: Double) : DoubleConstraint, BeAtLeastConstraint<Double>

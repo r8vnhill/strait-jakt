@@ -1,36 +1,52 @@
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
+ */
+
 package cl.ravenhill.jakt.constraints
 
 
 /**
- * Defines a contract for implementing constraints that check if a given value is positive.
+ * Represents a constraint that ensures a value is positive, i.e., greater than a specified zero value.
  *
- * This interface extends the [Constraint] interface and is specialized for [Comparable] types.
- * It provides the functionality to validate that a value is greater than a specified 'zero' value.
- * In the context of complex numbers, a complex number could be considered positive if its real part is
- * greater than zero and its imaginary part is zero.
+ * ## Usage:
+ * Define constraints for values to ensure they are positive.
  *
- * ## Usage
- * ### Example: Implementing a custom `BePositiveConstraint` for complex numbers
+ * ### Example 1: Implementing a BePositiveConstraint
+ *
  * ```kotlin
- * data class Complex(val real: Double, val imaginary: Double) : Comparable<Complex> {
- *     override fun compareTo(other: Complex): Int {
- *         // Comparison logic (e.g., based on magnitude)
+ * data object BePositiveInt : BePositiveConstraint<Int> {
+ *     override val zero: Int = 0
+ * }
+ *
+ * val result = 5.constrainedTo {
+ *     "'$it' Must be positive" { it must BePositiveInt }
+ * }
+ * println(result) // Prints: 5
+ * ```
+ *
+ * ### Example 2: Using a Constraints Block for Custom Validation
+ *
+ * ```kotlin
+ * fun validatePositive(value: Int) {
+ *     constraints {
+ *         "'$value' Must be positive" { value must object : BePositiveConstraint<Int> {
+ *             override val zero: Int = 0
+ *         }}
  *     }
  * }
  *
- * class ComplexPositiveConstraint : BePositiveConstraint<Complex> {
- *     override val zero: Complex = Complex(0.0, 0.0)
- *     override val validator: (Complex) -> Boolean
- *         get() = { it.real > zero.real && it.imaginary == zero.imaginary }
+ * try {
+ *     validatePositive(10) // Success
+ *     validatePositive(-5) // Throws ConstraintException
+ * } catch (e: ConstraintException) {
+ *     println(e) // Prints the constraint exception details
  * }
  * ```
  *
- * @param T The type parameter which must be [Comparable].
- * @property zero The value representing 'zero' for the type [T]. For complex numbers, this could be
- *   `Complex(0.0, 0.0)`.
- * @property validator A lambda function that takes a value of type [T] and returns a [Boolean] indicating
- *   whether the value is positive. For complex numbers, this could mean the real part is greater than zero and
- *   the imaginary part is zero.
+ * @param T The type of value to which the constraint is applied. Must be comparable.
+ * @property zero The value that the actual value must be greater than to be considered positive.
+ * @property validator The validation function that checks if the value meets the constraint criteria.
  */
 interface BePositiveConstraint<T> : Constraint<T> where T : Comparable<T> {
     val zero: T

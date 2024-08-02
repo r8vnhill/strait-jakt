@@ -1,6 +1,6 @@
-/**
- * Copyright (c) 2023, R8V.
- * BSD Zero Clause License.
+/*
+ * Copyright (c) 2024, Ignacio Slater M.
+ * 2-Clause BSD License.
  */
 
 package cl.ravenhill.jakt.constraints.doubles
@@ -9,23 +9,43 @@ import cl.ravenhill.jakt.constraints.Constraint
 import cl.ravenhill.jakt.exceptions.DoubleConstraintException
 
 /**
- * Defines a contract for implementing constraints on values of type [Double].
+ * Represents a constraint specifically for `Double` values. It ensures that the value meets specific criteria defined
+ * by the validator function.
  *
- * This interface extends [Constraint] specialized for `Double` type values. It overrides the
- * `generateException` method to produce a [DoubleConstraintException] which is designed specifically
- * for handling exceptions related to double constraints.
+ * ## Usage:
+ * Define constraints for `Double` values to ensure they meet specified criteria.
  *
- * ## Usage
- * ### Example: Implementing a custom constraint for doubles
+ * ### Example 1: Implementing a DoubleConstraint
+ *
  * ```kotlin
- * class DoublePositiveConstraint : DoubleConstraint {
- *     override val validator: (Double) -> Boolean = { it > 0.0 }
+ * data object BePositive : DoubleConstraint {
+ *     override val validator = { it > 0 }
  * }
+ *
+ * val result = 5.5.constrainedTo {
+ *     "'$it' Must be positive" { it must BePositive }
+ * }
+ * println(result) // Prints: 5.5
  * ```
  *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.0.0
- * @version 1.0.0
+ * ### Example 2: Using a Constraints Block for Custom Validation
+ *
+ * ```kotlin
+ * fun validateDouble(value: Double) {
+ *     constraints {
+ *         "'$value' Must be positive" { value must object : DoubleConstraint {
+ *             override val validator = { it > 0 }
+ *         }}
+ *     }
+ * }
+ *
+ * try {
+ *     validateDouble(10.0) // Success
+ *     validateDouble(-5.5) // Throws DoubleConstraintException
+ * } catch (e: DoubleConstraintException) {
+ *     println(e) // Prints the constraint exception details
+ * }
+ * ```
  */
 interface DoubleConstraint : Constraint<Double> {
 
