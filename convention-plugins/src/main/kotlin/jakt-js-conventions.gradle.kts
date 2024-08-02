@@ -29,8 +29,8 @@ kotlin {
     }
 
     // Configure the Kotlin Multiplatform project for WebAssembly (WASM) with WASI (WebAssembly System Interface).
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmWasi()
+//    @OptIn(ExperimentalWasmDsl::class)
+//    wasmWasi()
 
     // Apply a hierarchy template for organizing source sets and targets.
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -44,7 +44,7 @@ kotlin {
                 // Include WASM with JavaScript interop targets in the jsHosted group.
                 withWasmJs()
                 // Include WASM with WASI targets in the jsHosted group.
-                withWasmWasi()
+//                withWasmWasi()
             }
         }
     }

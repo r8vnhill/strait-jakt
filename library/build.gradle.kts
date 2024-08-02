@@ -8,21 +8,11 @@ plugins {
     id("module.publication")
     id("jakt-jvm-conventions")
     id("jakt-js-conventions")
+    id("jakt-native-conventions")
 }
 
 kotlin {
-    jvm()
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
-    mingwX64("windows")
-
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-
-            }
-        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("reflect"))
@@ -32,11 +22,6 @@ kotlin {
                 implementation(libs.kotest.property)
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("reflect"))
             }
         }
     }
