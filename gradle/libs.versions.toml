@@ -1,5 +1,5 @@
 [versions]
-jakt = "2.0.0-LOCAL"
+jakt = "2.0.0"
 jvmMinTarget = "8"
 jvmMaxTarget = "21"
 jvmCompiler = "21"
