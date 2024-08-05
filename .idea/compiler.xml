@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="17" />
+    <bytecodeTargetLevel target="21">
+      <module name="convention-plugins" target="17" />
+      <module name="convention-plugins.main" target="17" />
+      <module name="convention-plugins.test" target="17" />
+      <module name="strait-jakt.library.main" target="1.8" />
+      <module name="strait-jakt.library.test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

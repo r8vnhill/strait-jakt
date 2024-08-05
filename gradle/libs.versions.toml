@@ -1,0 +1,31 @@
+[versions]
+jakt = "2.0.0"
+jvmMinTarget = "8"
+jvmMaxTarget = "21"
+jvmCompiler = "21"
+kotlin = "2.0.0"
+agp = "8.5.0"
+nexus-publish = "2.0.0"
+android-minSdk = "24"
+android-compileSdk = "34"
+detekt = "1.23.6"
+kotest = "5.9.1"
+devPublishPlugin = "0.4.1"
+kotlinBinaryCompatibilityValidator = "0.16.3"
+
+[libraries]
+nexus-publish = { module = "io.github.gradle-nexus.publish-plugin:io.github.gradle-nexus.publish-plugin.gradle.plugin", version.ref = "nexus-publish" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
+kotest-framework-datatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+devPublish-plugin = { module = "dev.adamko.gradle:dev-publish-plugin", version.ref = "devPublishPlugin" }
+
+[plugins]
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotest-multiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }
+kotlinBinaryCompatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinBinaryCompatibilityValidator" }

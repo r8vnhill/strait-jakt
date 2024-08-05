@@ -277,4 +277,6 @@ hs_err_pid*
 replay_pid*
 
 Playground.*
+
 .kotlin
+local-secrets.properties

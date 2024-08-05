@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="library-jvm-2.0.0-LOCAL">
+    <output-path>$PROJECT_DIR$/library/build/libs</output-path>
+    <root id="archive" name="library-jvm-2.0.0-LOCAL.jar">
+      <element id="module-output" name="strait-jakt.library.jvmMain" />
+    </root>
+  </artifact>
+</component>
