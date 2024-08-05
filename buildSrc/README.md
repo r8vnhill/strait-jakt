@@ -1,6 +1,6 @@
 # Convention Plugins
 
-Adapted from [Kotest's `buildSrc`](https://github.com/kotest/kotest/tree/master/buildSrc).
+Adapted from [Kotest `buildSrc`](https://github.com/kotest/kotest/tree/master/buildSrc).
 
 This project contains a number of plugins that can be applied to a project to enforce conventions.
 
@@ -11,14 +11,14 @@ Configures a base project which uses kotlin-multiplatform (with no targets speci
 Here we configure anything that should apply to _every_ project, such as common plugins, repositories which should be
 used, etc.
 
-## Kotest JVM conventions
+## Jakt JVM conventions
 Adds a JVM target and sets basic JVM options
 
-## Kotest JS conventions
+## Jakt JS conventions
 Adds JS targets
 
-## Kotest native conventions
+## Jakt native conventions
 Adds native targets and creates a common native source set (`desktopMain` / `desktopTest`)
 
-## Kotest publishing conventions
+## Jakt publishing conventions
 Adds everything related to signing and publishing the libraries

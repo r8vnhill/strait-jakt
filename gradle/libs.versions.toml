@@ -11,6 +11,7 @@ android-compileSdk = "34"
 detekt = "1.23.6"
 kotest = "5.9.1"
 devPublishPlugin = "0.4.1"
+kotlinBinaryCompatibilityValidator = "0.16.3"
 
 [libraries]
 nexus-publish = { module = "io.github.gradle-nexus.publish-plugin:io.github.gradle-nexus.publish-plugin.gradle.plugin", version.ref = "nexus-publish" }
@@ -27,3 +28,4 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotest-multiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }
+kotlinBinaryCompatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinBinaryCompatibilityValidator" }
