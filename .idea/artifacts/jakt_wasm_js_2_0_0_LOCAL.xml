@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jakt-wasm-js-2.0.0-LOCAL">
+    <output-path>$PROJECT_DIR$/jakt/build/libs</output-path>
+    <root id="archive" name="jakt-wasm-js-2.0.0-LOCAL.jar" />
+  </artifact>
+</component>

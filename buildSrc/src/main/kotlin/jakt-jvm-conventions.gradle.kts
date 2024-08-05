@@ -2,7 +2,8 @@
  * Copyright (c) 2024, Ignacio Slater M.
  * 2-Clause BSD License.
  */
-import org.jetbrains.kotlin.gradle.plugin.KotlinTargetWithTests
+
+import org.jetbrains.kotlin.gradle.plugin.KotlinTargetWithTests.Companion.DEFAULT_TEST_RUN_NAME
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import utils.SystemPropertiesArgumentProvider
 import utils.asInt
@@ -10,35 +11,15 @@ import utils.jdkRelease
 import utils.jvmTarget
 import kotlin.jvm.optionals.getOrElse
 
-
 plugins {
     id("kotlin-conventions")
 }
 
-// Retrieve the version catalog named "libs".
-// A version catalog is a central place to define versions and dependencies that can be shared across different parts of
-// the build.
-private val libs: VersionCatalog = versionCatalogs.named("libs")
-
+// Configure the Kotlin Multiplatform project to include the JVM target.
 kotlin {
-    // Configuring the JVM target with Java interoperability
     jvm {
+        // Enable Java interoperability for the JVM target.
         withJava()
-    }
-
-    // Configuring source sets
-    sourceSets {
-        // Getting the JVM test source set and adding dependencies
-        getByName("jvmTest") {
-            dependencies {
-                // Adding the Kotlin reflect library as an implementation dependency
-                implementation(kotlin("reflect"))
-                // Adding the Kotest JUnit 5 runner as an implementation dependency
-                implementation(
-                    libs.findLibrary("kotest.runner.junit5")
-                        .getOrElse { error("Missing Kotest JUnit 5 runner dependency") })
-            }
-        }
     }
 }
 
@@ -55,16 +36,19 @@ private fun VersionCatalog.findJvmVersion(name: String): Provider<JavaLanguageVe
     JavaLanguageVersion.of(version.requiredVersion)
 }
 
-// Define the minimum Java version that Jakt supports.
-private val jvmMinTargetVersion = libs.findJvmVersion("jvmMinTarget")
+// Get the version catalog named "libs".
+val versionCatalog: VersionCatalog = versionCatalogs.named("libs")
 
-// Define the maximum Java version that Jakt supports.
-private val jvmMaxTargetVersion = libs.findJvmVersion("jvmMaxTarget")
+/** The minimum Java version that Kotest supports. */
+val jvmMinTargetVersion = versionCatalog.findJvmVersion("jvmMinTarget")
 
-// Define the Java version used for compilation.
-private val jvmCompilerVersion = libs.findJvmVersion("jvmCompiler")
+/** The maximum Java version that Kotest supports. */
+val jvmMaxTargetVersion = versionCatalog.findJvmVersion("jvmMaxTarget")
 
-// Configure the Java compiler language version based on the jvmCompilerVersion.
+/** The Java version used for compilation. */
+val jvmCompilerVersion = versionCatalog.findJvmVersion("jvmCompiler")
+
+// Configure the Kotlin JVM toolchain to use the specified compiler version.
 kotlin {
     jvmToolchain {
         languageVersion = jvmCompilerVersion
@@ -72,44 +56,41 @@ kotlin {
 }
 
 // Configure all tasks of type KotlinJvmCompile.
-// This block sets the JDK release and JVM target version for Kotlin compilation.
 tasks.withType<KotlinJvmCompile>().configureEach {
     compilerOptions {
-        // Set the JDK release version using the jvmMinTargetVersion provider.
+        // Set the JDK release version to the minimum target version.
         jdkRelease(jvmMinTargetVersion)
-        // Set the JVM target version using the jvmMinTargetVersion provider.
+        // Set the JVM target version to the minimum target version.
         jvmTarget = jvmMinTargetVersion.jvmTarget()
     }
 }
 
 // Configure all tasks of type JavaCompile.
-// This block sets the JDK release version for Java compilation.
 tasks.withType<JavaCompile>().configureEach {
-    // Set the JDK release version using the jvmMinTargetVersion provider converted to an integer.
+    // Set the JDK release version to the minimum target version.
     options.release = jvmMinTargetVersion.asInt()
 }
 
 // Configure all tasks of type Test.
-// This block adds a system properties argument provider to the test tasks.
 tasks.withType<Test>().configureEach {
-    // Add a SystemPropertiesArgumentProvider to the jvmArgumentProviders list.
-    jvmArgumentProviders.add(SystemPropertiesArgumentProvider.systemPropertiesArgumentProvider(
-        // Map the javaLauncher provider to a key-value pair of "testJavaLauncherVersion" and the Java language version
-        // as a string.
-        javaLauncher.map { "testJavaLauncherVersion" to it.metadata.languageVersion.asInt().toString() }
-    ))
+    // Add a system properties argument provider to the JVM argument providers.
+    jvmArgumentProviders.add(
+        SystemPropertiesArgumentProvider.SystemPropertiesArgumentProvider(
+            javaLauncher.map { "testJavaLauncherVersion" to it.metadata.languageVersion.asInt().toString() }
+        )
+    )
 }
 
+// Configure the Kotlin Multiplatform project to include the JVM target and test runs.
 kotlin {
     jvm {
         // Configure the default test run for the JVM target.
-        testRuns.named(KotlinTargetWithTests.DEFAULT_TEST_RUN_NAME) {
+        testRuns.named(DEFAULT_TEST_RUN_NAME) {
             executionTask.configure {
                 // Set the Java launcher for the default test run to use the minimum target JVM version.
                 javaLauncher = javaToolchains.launcherFor { languageVersion = jvmMinTargetVersion }
             }
         }
-
         // Create a new test run configuration named "maxJdk".
         val maxJdk by testRuns.creating {
             executionTask.configure {
@@ -117,9 +98,7 @@ kotlin {
                 javaLauncher = javaToolchains.launcherFor { languageVersion = jvmMaxTargetVersion }
             }
         }
-
         // Ensure that the "check" task depends on the execution of the maxJdk test run.
-        // This ensures that tests will be run with both the minimum and maximum target JVM versions.
         tasks.check {
             dependsOn(maxJdk.executionTask)
         }
