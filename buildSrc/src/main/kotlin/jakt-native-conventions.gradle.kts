@@ -3,8 +3,8 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyTemplate
 
 
 plugins {
-    id("kotlin-conventions")
-}
+        id("kotlin-conventions")
+    }
 /**
  * Checks if the current operating system is Linux.
  *

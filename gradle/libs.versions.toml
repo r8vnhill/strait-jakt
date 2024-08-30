@@ -1,5 +1,5 @@
 [versions]
-jakt = "2.0.0"
+jakt = "2.1.0-alpha-1"
 jvmMinTarget = "8"
 jvmMaxTarget = "21"
 jvmCompiler = "21"
@@ -10,8 +10,10 @@ android-minSdk = "24"
 android-compileSdk = "34"
 detekt = "1.23.6"
 kotest = "5.9.1"
+kotest-arrow = "1.4.0"
 devPublishPlugin = "0.4.1"
 kotlinBinaryCompatibilityValidator = "0.16.3"
+arrow = "2.0.0-alpha.3"
 
 [libraries]
 nexus-publish = { module = "io.github.gradle-nexus.publish-plugin:io.github.gradle-nexus.publish-plugin.gradle.plugin", version.ref = "nexus-publish" }
@@ -20,8 +22,10 @@ kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", versio
 kotest-framework-datatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest" }
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotest-arrow = { module = "io.kotest.extensions:kotest-assertions-arrow", version.ref = "kotest-arrow" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 devPublish-plugin = { module = "dev.adamko.gradle:dev-publish-plugin", version.ref = "devPublishPlugin" }
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }

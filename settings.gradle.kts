@@ -17,6 +17,13 @@ dependencyResolutionManagement {
    repositoriesMode = RepositoriesMode.PREFER_SETTINGS
 
    repositories {
+      maven {
+         url = uri("https://maven.pkg.github.com/r8vnhill/strait-jakt")
+         credentials {
+            username = System.getenv("GITHUB_USER")
+            password = System.getenv("GITHUB_TOKEN")
+         }
+      }
       mavenCentral()
       maven("https://oss.sonatype.org/content/repositories/snapshots/") {
          name = "SonatypeSnapshots"

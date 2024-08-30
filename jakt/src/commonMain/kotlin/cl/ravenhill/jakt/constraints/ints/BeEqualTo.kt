@@ -22,4 +22,3 @@ import cl.ravenhill.jakt.constraints.BeEqualToConstraint
  * @property validator A lambda function that verifies if the provided integer value matches the expected value.
  */
 data class BeEqualTo(override val expected: Int) : IntConstraint, BeEqualToConstraint<Int>
-

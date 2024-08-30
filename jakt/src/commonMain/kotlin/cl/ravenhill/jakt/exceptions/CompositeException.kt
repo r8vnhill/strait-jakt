@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Ignacio Slater M.
+ * Copyright (c) 2024, Ignacio Slater M.
  * 2-Clause BSD License.
  */
 
@@ -35,10 +35,6 @@ package cl.ravenhill.jakt.exceptions
  * @property throwables A list of `Throwable` instances, each representing an individual failure or exception.
  *
  * @constructor Constructs an instance of `CompositeException` with the provided list of [throwables].
- *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.0.0
- * @version 1.0.0
  */
 class CompositeException(val throwables: List<Throwable>) : Exception(
     if (throwables.size == 1)

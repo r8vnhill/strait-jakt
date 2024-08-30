@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jakt-js-2.1.0-alpha-1">
+    <output-path>$PROJECT_DIR$/jakt/build/libs</output-path>
+    <root id="archive" name="jakt-js-2.1.0-alpha-1.jar">
+      <element id="module-output" name="strait-jakt.jakt.jsMain" />
+    </root>
+  </artifact>
+</component>

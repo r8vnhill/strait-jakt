@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - TBD
+## [2.0.0] - 2024-08-05
 
 ## Added
 - **New constrainedTo() function:** Introduced a new function to apply constraints to the result of an operation, returning the result if it satisfies the constraints or throwing an exception otherwise.

@@ -7,7 +7,7 @@ plugins {
    id("jakt-js-conventions")
    id("jakt-native-conventions")
    id("jakt-publishing-conventions")
-   id("jakt-watchos-device-conventions")
+//   id("jakt-watchos-device-conventions")
 }
 
 /**
@@ -22,20 +22,29 @@ kotlin {
          dependencies {
             // Add Kotlin reflection library to the commonMain source set
             implementation(kotlin("reflect"))
+            implementation(libs.arrow.core)
          }
       }
 
       // Configure the commonTest source set directly
       getByName("commonTest") {
          dependencies {
-            // Add Kotlin reflection library to the commonTest source set
             implementation(kotlin("reflect"))
-
-            // Add Kotest libraries to the commonTest source set
             implementation(libs.kotest.assertions.core)
             implementation(libs.kotest.framework.engine)
             implementation(libs.kotest.framework.datatest)
             implementation(libs.kotest.property)
+         }
+      }
+
+      getByName("jvmTest") {
+         dependencies {
+            implementation(libs.kotest.runner.junit5)
+            implementation(libs.kotest.assertions.core)
+            implementation(libs.kotest.framework.engine)
+            implementation(libs.kotest.framework.datatest)
+            implementation(libs.kotest.property)
+            implementation(libs.kotest.arrow)
          }
       }
    }

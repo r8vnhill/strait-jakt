@@ -29,13 +29,17 @@ val properties = Properties().apply {
 // Retrieve sensitive information (credentials) from the project properties.
 val ossrhUsername: String? = properties.getProperty("osshr.user")
 val ossrhPassword: String? = properties.getProperty("osshr.password")
+val signingKey = System.getenv("SIGNING_KEY") ?: error("SIGNING_KEY not found")
+val signingPassword = System.getenv("SIGNING_PASSWORD") ?: error("SIGNING_PASSWORD not found")
 
 // Define the Maven Central repository name used for publishing.
 val mavenCentralRepoName = "Deploy"
 
+
 // Configure the signing task for the project.
 signing {
     useGpgCmd()
+    useInMemoryPgpKeys(signingKey, signingPassword)
 }
 
 // Configure the Gradle task graph to determine if publishing to Maven Central.
@@ -77,6 +81,16 @@ publishing {
                 // Retrieve credentials from environment variables if available, otherwise use project properties.
                 username = System.getenv("OSSRH_USERNAME") ?: ossrhUsername
                 password = System.getenv("OSSRH_PASSWORD") ?: ossrhPassword
+            }
+        }
+
+        maven {
+            val githubPackagesUrl = uri("https://maven.pkg.github.com/r8vnhill/strait-jakt")
+            name = "GitHubPackages"
+            url = githubPackagesUrl
+            credentials {
+                username = System.getenv("GITHUB_USER") ?: error("GitHub username not found")
+                password = System.getenv("GITHUB_TOKEN") ?: error("GitHub token not found")
             }
         }
 

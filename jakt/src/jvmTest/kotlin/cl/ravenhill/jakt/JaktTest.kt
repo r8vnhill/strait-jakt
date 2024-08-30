@@ -10,6 +10,8 @@ import cl.ravenhill.jakt.arbs.datatypes.anyPrimitive
 import cl.ravenhill.jakt.constraints.ints.BeEqualTo
 import cl.ravenhill.jakt.exceptions.CompositeException
 import cl.ravenhill.jakt.exceptions.ConstraintException
+import io.kotest.assertions.arrow.core.shouldBeLeft
+import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.common.ExperimentalKotest
@@ -26,7 +28,7 @@ import io.kotest.property.arbitrary.list
 import io.kotest.property.arbitrary.string
 import io.kotest.property.checkAll
 
-@OptIn(ExperimentalKotest::class, ExperimentalJakt::class)
+@OptIn(ExperimentalKotest::class)
 class JaktTest : FreeSpec({
 
     "A [Jakt.Scope]" - {
@@ -55,9 +57,9 @@ class JaktTest : FreeSpec({
                             vss.forEach { vs ->
                                 vs must constraint
                                 if (constraint.validator(vs)) {
-                                    outerScope.results.last().shouldBeSuccess()
+                                    outerScope.results.last().shouldBeRight()
                                 } else {
-                                    outerScope.results.last().shouldBeFailure()
+                                    outerScope.results.last().shouldBeLeft()
                                 }
                             }
                             outerScope.results.size shouldBe vss.size
@@ -77,9 +79,9 @@ class JaktTest : FreeSpec({
                             vss.forEach { vs ->
                                 vs mustNot constraint
                                 if (!constraint.validator(vs)) {
-                                    outerScope.results.last().shouldBeSuccess()
+                                    outerScope.results.last().shouldBeRight()
                                 } else {
-                                    outerScope.results.last().shouldBeFailure()
+                                    outerScope.results.last().shouldBeLeft()
                                 }
                             }
                             outerScope.results.size shouldBe vss.size
@@ -99,9 +101,9 @@ class JaktTest : FreeSpec({
                             vss.forEach { vs ->
                                 constraint { constraint.validator(vs) }
                                 if (constraint.validator(vs)) {
-                                    outerScope.results.last().shouldBeSuccess()
+                                    outerScope.results.last().shouldBeRight()
                                 } else {
-                                    outerScope.results.last().shouldBeFailure()
+                                    outerScope.results.last().shouldBeLeft()
                                 }
                             }
                             outerScope.results.size shouldBe vss.size
@@ -160,7 +162,7 @@ class JaktTest : FreeSpec({
                 checkAll<String> { message ->
                     with(Jakt.Scope()) {
                         message { 1 must BeEqualTo(1) }
-                        results.last().shouldBeSuccess()
+                        results.last().shouldBeRight()
                         results.last().getOrNull() shouldBe 1
                     }
                 }

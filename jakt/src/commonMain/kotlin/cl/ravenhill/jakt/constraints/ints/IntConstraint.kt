@@ -26,10 +26,6 @@ import cl.ravenhill.jakt.exceptions.IntConstraintException
  * }
  * ```
  * With this constraint, any integer value checked against it will be validated to be even.
- *
- * @author <a href="https://www.github.com/r8vnhill">Ignacio Slater M.</a>
- * @since 1.0.0
- * @version 1.0.0
  */
 interface IntConstraint : Constraint<Int> {
 
