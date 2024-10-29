@@ -35,6 +35,12 @@ val signingPassword = System.getenv("SIGNING_PASSWORD") ?: error("SIGNING_PASSWO
 // Define the Maven Central repository name used for publishing.
 val mavenCentralRepoName = "Deploy"
 
+val githubProperties = Properties().apply {
+    load(rootProject.file("github.properties").reader())
+}
+
+val githubToken: String = githubProperties.getProperty("github.token")
+val githubUser: String = githubProperties.getProperty("github.username")
 
 // Configure the signing task for the project.
 signing {
@@ -89,8 +95,8 @@ publishing {
             name = "GitHubPackages"
             url = githubPackagesUrl
             credentials {
-                username = System.getenv("GITHUB_USER") ?: error("GitHub username not found")
-                password = System.getenv("GITHUB_TOKEN") ?: error("GitHub token not found")
+                username = githubUser
+                password = githubToken
             }
         }
 

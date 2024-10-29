@@ -92,12 +92,12 @@ object Jakt {
         /**
          * A mutable list that stores the results of each validation
          */
-        private val _results: MutableList<Either<ConstraintException, *>> = mutableListOf()
+        private val _results: MutableList<Either<Exception, *>> = mutableListOf()
 
         /**
          * A list of results from the validations performed within the scope.
          */
-        val results: List<Either<ConstraintException, *>>
+        val results: List<Either<Exception, *>>
             get() = _results
 
         /**
@@ -124,7 +124,7 @@ object Jakt {
          * @param predicate The block where the constraint is defined.
          */
         inline operator fun String.invoke(
-            noinline exceptionGenerator: (String) -> ConstraintException,
+            noinline exceptionGenerator: (String) -> Exception,
             predicate: StringScope.() -> Unit,
         ) = StringScope(this).apply {
             this.exceptionGenerator = exceptionGenerator
@@ -140,14 +140,13 @@ object Jakt {
         inner class StringScope(val message: String) {
             val outerScope = this@Scope
 
-            var exceptionGenerator: ((String) -> ConstraintException)? = null
+            var exceptionGenerator: ((String) -> Exception)? = null
 
             /**
              * Validates a value against a constraint, enforcing that the value must satisfy the constraint.
              *
              * @param constraint The constraint to validate the value against.
              * @return An `Either` representing the success or failure of the validation.
-             * @throws ConstraintException if the constraint fails and `shortCircuit` is `true`.
              */
             infix fun <T, C : Constraint<T>> T.must(constraint: C) {
                 _results += validate(constraint, shouldPass = true).also {
@@ -161,7 +160,6 @@ object Jakt {
              * Validates a value against a constraint, enforcing that the value must not satisfy the constraint.
              *
              * @param constraint The constraint to validate the value against.
-             * @throws ConstraintException if the constraint fails and `shortCircuit` is `true`.
              */
             infix fun <T, C : Constraint<T>> T.mustNot(constraint: C) {
                 _results += validate(constraint, shouldPass = false).also {
@@ -181,7 +179,7 @@ object Jakt {
             private fun <T, C : Constraint<T>> T.validate(
                 constraint: C,
                 shouldPass: Boolean
-            ): Either<ConstraintException, T> {
+            ): Either<Exception, T> {
                 val validationResult = if (constraint.validator(this) == shouldPass) {
                     this.right()
                 } else {

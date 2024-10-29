@@ -34,7 +34,7 @@ import io.kotest.property.PropTestListener
  */
 data object ResetJaktDefaultsListener : PropTestListener {
     override suspend fun afterTest() {
-        Jakt.skipChecks = false
+        Jakt.skipChecks = Checks.MUST
         Jakt.shortCircuit = false
     }
 }

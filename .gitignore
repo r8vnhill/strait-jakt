@@ -280,3 +280,5 @@ Playground.*
 
 .kotlin
 local-secrets.properties
+
+github.properties

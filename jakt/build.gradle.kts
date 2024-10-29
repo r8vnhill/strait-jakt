@@ -7,7 +7,6 @@ plugins {
    id("jakt-js-conventions")
    id("jakt-native-conventions")
    id("jakt-publishing-conventions")
-//   id("jakt-watchos-device-conventions")
 }
 
 /**

@@ -110,5 +110,5 @@ interface Constraint<T> {
      * @param description A string describing the reason for the exception.
      * @return A `ConstraintException` containing the provided description.
      */
-    fun generateException(description: String): ConstraintException
+    fun generateException(description: String): Exception
 }
