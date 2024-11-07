@@ -5,8 +5,8 @@
 
 package cl.ravenhill.jakt.assertions.constraints
 
-import cl.ravenhill.jakt.constraints.BeNegativeConstraint
-import cl.ravenhill.jakt.constraints.BePositiveConstraint
+import cl.ravenhill.jakt.rules.BeNegativeConstraint
+import cl.ravenhill.jakt.rules.BePositiveConstraint
 import io.kotest.core.TestConfiguration
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.matchers.booleans.shouldBeFalse

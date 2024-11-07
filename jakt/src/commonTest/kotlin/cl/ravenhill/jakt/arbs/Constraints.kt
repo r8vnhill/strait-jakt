@@ -78,7 +78,7 @@ fun Arb.Companion.constraint() = choice(
  *
  * @return An arbitrary of `BeEmpty` representing the collection constraint.
  */
-fun Arb.Companion.collectionBeEmpty() = arbitrary { cl.ravenhill.jakt.constraints.collections.BeEmpty }
+fun Arb.Companion.collectionBeEmpty() = arbitrary { cl.ravenhill.jakt.rules.collections.BeEmpty }
 
 /**
  * Provides an arbitrary generator for the `HaveElement` collection constraint.
@@ -105,7 +105,7 @@ fun Arb.Companion.collectionBeEmpty() = arbitrary { cl.ravenhill.jakt.constraint
  * @return An arbitrary of `HaveElement` with a generated integer element.
  */
 fun Arb.Companion.collectionHaveElement() =
-    arbitrary { cl.ravenhill.jakt.constraints.collections.HaveElement(int().bind()) }
+    arbitrary { cl.ravenhill.jakt.rules.collections.HaveElement(int().bind()) }
 
 /**
  * Provides an arbitrary generator for the `HaveSize` collection constraint.
@@ -132,4 +132,4 @@ fun Arb.Companion.collectionHaveElement() =
  * @return An arbitrary of `HaveSize` with a generated size value.
  */
 fun Arb.Companion.collectionHaveSize(size: Arb<Int> = nonNegativeInt()) =
-    arbitrary { cl.ravenhill.jakt.constraints.collections.HaveSize(size.bind()) }
+    arbitrary { cl.ravenhill.jakt.rules.collections.HaveSize(size.bind()) }

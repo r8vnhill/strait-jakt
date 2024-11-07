@@ -2,7 +2,7 @@ package cl.ravenhill.jakt.assertions.constraints
 
 import cl.ravenhill.jakt.arbs.datatypes.orderedPair
 import cl.ravenhill.jakt.arbs.datatypes.orderedTriple
-import cl.ravenhill.jakt.constraints.BeInRangeConstraint
+import cl.ravenhill.jakt.rules.BeInRangeConstraint
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue

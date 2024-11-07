@@ -1,9 +1,9 @@
 package cl.ravenhill.jakt.assertions.constraints
 
 import cl.ravenhill.jakt.arbs.datatypes.orderedPair
-import cl.ravenhill.jakt.constraints.BeAtLeastConstraint
-import cl.ravenhill.jakt.constraints.BeAtMostConstraint
-import cl.ravenhill.jakt.constraints.Constraint
+import cl.ravenhill.jakt.rules.BeAtLeastConstraint
+import cl.ravenhill.jakt.rules.BeAtMostConstraint
+import cl.ravenhill.jakt.rules.Rule
 import io.kotest.core.spec.style.freeSpec
 import io.kotest.core.spec.style.scopes.FreeSpecContainerScope
 import io.kotest.matchers.shouldBe
@@ -13,7 +13,7 @@ import io.kotest.property.checkAll
 
 
 /**
- * Tests a binary [Constraint] validator within a [FreeSpecContainerScope] using property-based testing.
+ * Tests a binary [Rule] validator within a [FreeSpecContainerScope] using property-based testing.
  *
  * This function is designed for testing binary constraints with a pair of different types [T] and [U].
  * It uses generators to produce pairs of test values and a constraint factory ([constraintFactory]) to instantiate
@@ -37,7 +37,7 @@ import io.kotest.property.checkAll
  *
  * @param T The type parameter for the first value in the pair being tested.
  * @param U The type parameter for the second value in the pair and the type being constrained.
- * @param C The [Constraint] type being validated, which constrains the type [U].
+ * @param C The [Rule] type being validated, which constrains the type [U].
  * @param trueGenerator A [Gen] generator producing pairs of [T, U] for which the constraint is expected to be true.
  * @param falseGenerator A [Gen] generator producing pairs of [T, U] for which the constraint is expected to be false.
  * @param constraintFactory A lambda function that takes a value of type [T] and returns an instance of [C].
@@ -51,7 +51,7 @@ private suspend fun <T, U, C> FreeSpecContainerScope.`test binary Constraint val
     constraintFactory: (T) -> C,
     trueCase: (T, U) -> Boolean,
     falseCase: (T, U) -> Boolean
-) where C : Constraint<U> {
+) where C : Rule<U> {
     "should have a validator that" - {
         "returns true when the constraint condition is met" {
             checkAll(trueGenerator) { (first, second) ->
@@ -71,13 +71,13 @@ private suspend fun <T, U, C> FreeSpecContainerScope.`test binary Constraint val
  * Tests the assignment of a property within a constraint using property-based testing within a
  * [FreeSpecContainerScope].
  *
- * This function is designed to verify that a specific property of a [Constraint] is correctly assigned its value
+ * This function is designed to verify that a specific property of a [Rule] is correctly assigned its value
  * upon construction. It uses a generator ([gen]) to produce test values and a constraint factory ([constraint])
  * to instantiate the constraint being tested. The [propertyGetter] function is used to retrieve the property value
  * from the constraint instance for validation.
  *
  * @param T The type parameter for the value being tested.
- * @param C The [Constraint] type being validated.
+ * @param C The [Rule] type being validated.
  * @param gen An [Arb] generator for the type [T], which provides values to test the property assignment.
  * @param constraint A lambda function that takes a value of type [T] and returns an instance of [C].
  * @param propertyName The name of the property being tested, used for descriptive purposes in test output.
@@ -88,7 +88,7 @@ private suspend fun <T, C> FreeSpecContainerScope.`test property assignment`(
     constraint: (T) -> C,
     propertyName: String,
     propertyGetter: C.() -> T
-) where C : Constraint<T> {
+) where C : Rule<T> {
     "should have a $propertyName value that" - {
         "returns the value provided in the constructor" {
             checkAll(gen) { value ->

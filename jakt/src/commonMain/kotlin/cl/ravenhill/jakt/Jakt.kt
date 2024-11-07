@@ -10,7 +10,7 @@ import arrow.core.left
 import arrow.core.right
 import cl.ravenhill.jakt.Jakt.shortCircuit
 import cl.ravenhill.jakt.Jakt.skipChecks
-import cl.ravenhill.jakt.constraints.Constraint
+import cl.ravenhill.jakt.rules.Rule
 import cl.ravenhill.jakt.exceptions.CompositeException
 import cl.ravenhill.jakt.exceptions.ConstraintException
 
@@ -58,6 +58,11 @@ object Jakt {
      * If `true`, stops further validations as soon as a constraint fails and throws the corresponding exception.
      */
     var shortCircuit = false
+
+    /**
+     * If `true`, includes the stack trace in the exception message.
+     */
+    var includeStackTrace = false
 
     /**
      * Defines constraints on values within the provided `builder` scope.
@@ -114,7 +119,8 @@ object Jakt {
          *
          * @param predicate The block where the constraint is defined.
          */
-        inline operator fun String.invoke(predicate: StringScope.() -> Unit) = StringScope(this).apply { predicate() }
+        inline operator fun String.invoke(predicate: StringScope.() -> Unit) =
+            StringScope(this).apply { predicate() }
 
         /**
          * Defines a constraint within the `Scope` using a string message and a custom exception generator.
@@ -148,7 +154,7 @@ object Jakt {
              * @param constraint The constraint to validate the value against.
              * @return An `Either` representing the success or failure of the validation.
              */
-            infix fun <T, C : Constraint<T>> T.must(constraint: C) {
+            infix fun <T, C : Rule<T>> T.must(constraint: C) {
                 _results += validate(constraint, shouldPass = true).also {
                     if (shortCircuit && it.isLeft()) {
                         throw it.swap().getOrNull()!! // This is safe because we are checking if it is left
@@ -161,7 +167,7 @@ object Jakt {
              *
              * @param constraint The constraint to validate the value against.
              */
-            infix fun <T, C : Constraint<T>> T.mustNot(constraint: C) {
+            infix fun <T, C : Rule<T>> T.mustNot(constraint: C) {
                 _results += validate(constraint, shouldPass = false).also {
                     if (shortCircuit && it.isLeft()) {
                         throw it.swap().getOrNull()!! // This is safe because we are checking if it is left
@@ -176,7 +182,7 @@ object Jakt {
              * @param shouldPass Indicates whether the value should pass or fail the constraint.
              * @return An `Either` representing the success or failure of the validation.
              */
-            private fun <T, C : Constraint<T>> T.validate(
+            private fun <T, C : Rule<T>> T.validate(
                 constraint: C,
                 shouldPass: Boolean
             ): Either<Exception, T> {

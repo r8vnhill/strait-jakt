@@ -5,10 +5,10 @@
 
 package cl.ravenhill.jakt
 
-import cl.ravenhill.jakt.constraints.ints.BeAtLeast
-import cl.ravenhill.jakt.constraints.ints.BeAtMost
-import cl.ravenhill.jakt.constraints.ints.BeNegative
-import cl.ravenhill.jakt.constraints.ints.BePositive
+import cl.ravenhill.jakt.rules.ints.BeAtLeast
+import cl.ravenhill.jakt.rules.ints.BeAtMost
+import cl.ravenhill.jakt.rules.ints.BeNegative
+import cl.ravenhill.jakt.rules.ints.BePositive
 import cl.ravenhill.jakt.exceptions.CompositeException
 import cl.ravenhill.jakt.exceptions.IntConstraintException
 import io.kotest.assertions.throwables.shouldThrow
